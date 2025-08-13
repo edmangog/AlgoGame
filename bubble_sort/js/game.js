@@ -66,6 +66,14 @@ class BubbleSortGame {
     createControls() {
         return `
             <div class="controls">
+                <button class="swap-btn">
+                    <span class="english">Swap</span>
+                    <span class="chinese" style="display:none;">交換</span>
+                </button>
+                <button class="skip-btn">
+                    <span class="english">Skip</span>
+                    <span class="chinese" style="display:none;">跳過</span>
+                </button>
                 <button class="new-game">
                     <span class="english">New Game</span>
                     <span class="chinese" style="display:none;">新遊戲</span>
@@ -79,14 +87,6 @@ class BubbleSortGame {
                         <option value="hard">Hard (10)</option>
                     </select>
                 </div>
-                <button class="swap-btn">
-                    <span class="english">Swap</span>
-                    <span class="chinese" style="display:none;">交換</span>
-                </button>
-                <button class="skip-btn">
-                    <span class="english">Skip</span>
-                    <span class="chinese" style="display:none;">跳過</span>
-                </button>
             </div>
         `;
     }
@@ -258,8 +258,8 @@ class BubbleSortGame {
                             items[j].classList.remove('optimal');
                         }, 1000);
                     }
-                }, 300);
-            }, 300);
+                }, 400);
+            }, 400);
         }, 100);
     }
     
@@ -302,8 +302,8 @@ class BubbleSortGame {
             }, 500);
         } 
         // Continue if not sorted
-        else if (this.currentPass > this.currentNumbers.length) {
-            // Shouldn't need more than n passes
+        else if (this.currentPass > this.currentNumbers.length - 1) {
+            // Shouldn't need more than n-1 passes
             clearInterval(this.timerInterval);
             setTimeout(() => {
                 alert(this.language === 'english' 
