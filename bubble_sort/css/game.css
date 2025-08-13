@@ -1,0 +1,76 @@
+.number-line {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 30px 0;
+    min-height: 100px;
+}
+
+.number-box {
+    width: 60px;
+    height: 60px;
+    background: var(--secondary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s;
+    position: relative;
+}
+
+.number-box.active {
+    background-color: var(--primary);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255,107,107,0.5);
+}
+
+.number-box.swapping-from {
+    background-color: #4CAF50;
+    z-index: 10;
+}
+
+.number-box.swapping-to {
+    background-color: #FF9800;
+    z-index: 10;
+}
+
+.number-box.swapping {
+    animation: swap 0.5s ease-in-out;
+    transition: none;
+}
+
+.number-box.optimal {
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.8);
+}
+
+@keyframes swap {
+    0% { transform: translateX(0); }
+    25% { transform: translateY(-30px); }
+    50% { transform: translateX(calc(var(--swap-dir) * 60px)); }
+    75% { transform: translateY(0); }
+    100% { transform: translateX(0); }
+}
+
+.tutorial {
+    background: rgba(78, 205, 196, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 30px;
+}
+
+.algorithm-explanation {
+    margin-top: 15px;
+}
+
+.algorithm-explanation ol {
+    text-align: left;
+    margin-left: 20px;
+}
+
+.algorithm-explanation li {
+    margin-bottom: 5px;
+}
