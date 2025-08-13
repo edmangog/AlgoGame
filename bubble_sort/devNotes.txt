@@ -1,0 +1,23 @@
+Must:
+- simply click swapped or not (Two buttons)
+- Reset
+- Start
+- Timeleft (countdown)
+- Ascending / Descending Order?
+- Pass is n-1 (must gone through all)
+
+Optional:
+- Tutorial?
+- Display the current pass (optional)
+- Hints: (it's xxx order and we are comparing i and j. Would you swap them?)
+
+
+
+Goal: Make a better bubble sort game
+Directory: AlgoGame/bubble_sort
+Task 1: Fix the click functionalities of bubble sort fail sometimes. 
+Task 2:showing the number of pass 
+Task3: Highligh the currecnt adjacent elements and let users to decide whether swap or not
+
+Ref:
+https://www.youtube.com/watch?v=cQDuwnTSeCs

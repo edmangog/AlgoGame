@@ -8,6 +8,8 @@ class BubbleSortGame {
         this.startTime = Date.now();
         this.timerInterval = null;
         this.language = 'english';
+        this.currentIndex = 0;
+        this.currentPass = 1;
         this.init();
     }
 
@@ -52,6 +54,11 @@ class BubbleSortGame {
                     <span class="chinese" style="display:none;">時間: </span>
                     <span id="timer">0</span>s
                 </div>
+                <div>
+                    <span class="english">Pass: </span>
+                    <span class="chinese" style="display:none;">遍歷次數: </span>
+                    <span id="passCount">1</span>
+                </div>
             </div>
         `;
     }
@@ -63,10 +70,6 @@ class BubbleSortGame {
                     <span class="english">New Game</span>
                     <span class="chinese" style="display:none;">新遊戲</span>
                 </button>
-                <button class="hint">
-                    <span class="english">Hint</span>
-                    <span class="chinese" style="display:none;">提示</span>
-                </button>
                 <div class="difficulty">
                     <span class="english">Difficulty:</span>
                     <span class="chinese" style="display:none;">難度:</span>
@@ -76,6 +79,14 @@ class BubbleSortGame {
                         <option value="hard">Hard (10)</option>
                     </select>
                 </div>
+                <button class="swap-btn">
+                    <span class="english">Swap</span>
+                    <span class="chinese" style="display:none;">交換</span>
+                </button>
+                <button class="skip-btn">
+                    <span class="english">Skip</span>
+                    <span class="chinese" style="display:none;">跳過</span>
+                </button>
             </div>
         `;
     }
@@ -110,16 +121,39 @@ class BubbleSortGame {
 
     setupEventListeners() {
         this.app.querySelector('.new-game').addEventListener('click', () => this.newGame());
-        this.app.querySelector('.hint').addEventListener('click', () => this.showHint());
+        this.app.querySelector('.swap-btn').addEventListener('click', () => this.swapCurrent());
+        this.app.querySelector('.skip-btn').addEventListener('click', () => this.skipCurrent());
+    }
+    
+    swapCurrent() {
+        if (this.currentIndex >= this.currentNumbers.length - 1) return;
+        
+        const i = this.currentIndex;
+        const j = i + 1;
+        
+        if (this.currentNumbers[i] > this.currentNumbers[j]) {
+            this.swapNumbers(i, j);
+            this.swapCount++;
+            this.updateScoreBoard();
+        }
+        
+        this.nextStep();
+    }
+    
+    skipCurrent() {
+        this.nextStep();
     }
 
     newGame() {
         clearInterval(this.timerInterval);
         this.swapCount = 0;
         this.startTime = Date.now();
+        this.currentIndex = 0;
+        this.currentPass = 1;
         this.updateScoreBoard();
         this.generateNumbers();
         this.startTimer();
+        this.highlightCurrentPair();
     }
 
     generateNumbers() {
@@ -134,28 +168,58 @@ class BubbleSortGame {
         this.currentNumbers.forEach((num, i) => {
             const numBox = createElement('div', 'number-box', num);
             numBox.dataset.index = i;
-            numBox.addEventListener('click', (e) => this.handleSwap(Number(e.target.dataset.index)));
             numberLine.appendChild(numBox);
         });
     }
 
-    handleSwap(index) {
-        const activeItems = this.app.querySelectorAll('.number-box.active');
-        if (activeItems.length === 0) {
-            this.app.querySelectorAll('.number-box')[index].classList.add('active');
-            return;
+    swapCurrent() {
+        if (this.currentIndex >= this.currentNumbers.length - 1) return;
+        
+        const i = this.currentIndex;
+        const j = i + 1;
+        
+        if (this.currentNumbers[i] > this.currentNumbers[j]) {
+            this.swapNumbers(i, j);
+            this.swapCount++;
+            this.updateScoreBoard();
         }
-
-        const firstIndex = Number(activeItems[0].dataset.index);
-        if (Math.abs(firstIndex - index) !== 1) {
-            this.resetSelection();
-            return;
+        
+        this.nextStep();
+    }
+    
+    skipCurrent() {
+        this.nextStep();
+    }
+    
+    nextStep() {
+        this.currentIndex++;
+        
+        if (this.currentIndex >= this.currentNumbers.length - 1) {
+            this.currentPass++;
+            this.updateScoreBoard();
+            this.checkWin();
+            this.currentIndex = 0;
+            
+            // Highlight the last pair before resetting
+            this.highlightCurrentPair();
+            setTimeout(() => {
+                this.highlightCurrentPair(); // Highlight first pair of next pass
+            }, 300);
+        } else {
+            this.highlightCurrentPair();
         }
-
-        this.swapNumbers(firstIndex, index);
-        this.swapCount++;
-        this.updateScoreBoard();
-        this.checkWin();
+    }
+    
+    highlightCurrentPair() {
+        this.resetSelection();
+        
+        const items = this.app.querySelectorAll('.number-box');
+        items.forEach(item => item.classList.remove('active'));
+        
+        if (this.currentIndex < this.currentNumbers.length - 1) {
+            items[this.currentIndex].classList.add('active');
+            items[this.currentIndex + 1].classList.add('active');
+        }
     }
 
     swapNumbers(i, j) {
@@ -223,9 +287,11 @@ class BubbleSortGame {
 
     updateScoreBoard() {
         this.app.querySelector('#swapCount').textContent = this.swapCount;
+        this.app.querySelector('#passCount').textContent = this.currentPass;
     }
 
     checkWin() {
+        // Check if array is sorted
         if (this.currentNumbers.every((val, i, arr) => !i || arr[i-1] <= val)) {
             clearInterval(this.timerInterval);
             const timeTaken = Math.floor((Date.now() - this.startTime) / 1000);
@@ -233,6 +299,16 @@ class BubbleSortGame {
                 alert(this.language === 'english' 
                     ? `Congratulations! Sorted in ${this.swapCount} swaps and ${timeTaken} seconds!` 
                     : `恭喜！用了${this.swapCount}次交換，時間${timeTaken}秒！`);
+            }, 500);
+        } 
+        // Continue if not sorted
+        else if (this.currentPass > this.currentNumbers.length) {
+            // Shouldn't need more than n passes
+            clearInterval(this.timerInterval);
+            setTimeout(() => {
+                alert(this.language === 'english' 
+                    ? `Game over! The array wasn't sorted after ${this.currentPass} passes.` 
+                    : `遊戲結束！經過${this.currentPass}次遍歷，數組仍未排序。`);
             }, 500);
         }
     }

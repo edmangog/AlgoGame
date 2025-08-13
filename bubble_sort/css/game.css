@@ -17,29 +17,34 @@
     font-size: 24px;
     font-weight: bold;
     color: white;
-    cursor: pointer;
     transition: transform 0.3s;
     position: relative;
 }
 
 .number-box.active {
-    background-color: var(--primary);
+    border: 3px solid #4CAF50;
     transform: scale(1.1);
-    box-shadow: 0 0 15px rgba(255,107,107,0.5);
+}
+
+.number-box.selected {
+    border: 3px solid #2196F3;
+    transform: scale(1.1);
 }
 
 .number-box.swapping-from {
     background-color: #4CAF50;
     z-index: 10;
+    border: 2px solid #2E7D32;
 }
 
 .number-box.swapping-to {
     background-color: #FF9800;
     z-index: 10;
+    border: 2px solid #EF6C00;
 }
 
 .number-box.swapping {
-    animation: swap 0.5s ease-in-out;
+    animation: swap 0.8s ease-in-out;
     transition: none;
 }
 
@@ -48,11 +53,11 @@
 }
 
 @keyframes swap {
-    0% { transform: translateX(0); }
-    25% { transform: translateY(-30px); }
-    50% { transform: translateX(calc(var(--swap-dir) * 60px)); }
-    75% { transform: translateY(0); }
-    100% { transform: translateX(0); }
+    0% { transform: translateX(0) scale(1.1); }
+    25% { transform: translateY(-30px) scale(1.1); }
+    50% { transform: translateX(calc(var(--swap-dir) * 60px)) scale(1.1); }
+    75% { transform: translateY(0) scale(1.1); }
+    100% { transform: translateX(0) scale(1.1); }
 }
 
 .tutorial {
