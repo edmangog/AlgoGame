@@ -4,14 +4,62 @@ import { setupLanguageToggle } from '../../shared/js/lang-toggle.js';
 class BubbleSortGame {
     constructor() {
         this.currentNumbers = [];
-        this.swapCount = 0;
         this.score = 0; // Added scoring system
         this.startTime = Date.now();
         this.timerInterval = null;
         this.language = 'english';
         this.currentIndex = 0;
         this.currentPass = 1;
+        
+        // Encouraging messages for all actions
+        this.feedbackMessages = {
+            correct: {
+                english: [
+                    "Awesome! 😊 +10 points!",
+                    "Perfect move! 🌟 +10 points!",
+                    "Great decision! 👍 +10 points!",
+                    "Well done! 🎉 +10 points!",
+                    "Excellent choice! 💯 +10 points!"
+                ],
+                chinese: [
+                    "太棒了！😊 +10分！",
+                    "完美的選擇！🌟 +10分！",
+                    "明智的決定！👍 +10分！",
+                    "做得好！🎉 +10分！",
+                    "出色的選擇！💯 +10分！"
+                ]
+            },
+            incorrect: {
+                english: [
+                    "Oops! -10 points. Don't worry, keep going! 💪",
+                    "Not quite! -10 points. You'll get it next time! 😊",
+                    "Mistakes happen! -10 points. Keep learning! 🌟",
+                    "Almost! -10 points. You're making progress! 👍",
+                    "No problem! -10 points. Every expert was a beginner! 🎓"
+                ],
+                chinese: [
+                    "哎呀！扣10分。別擔心，繼續加油！💪",
+                    "差一點！扣10分。下次會更好！😊",
+                    "犯錯是學習的一部分！扣10分。繼續進步！🌟",
+                    "接近了！扣10分。你正在進步！👍",
+                    "沒關係！扣10分。每個專家都曾是新手！🎓"
+                ]
+            }
+        };
+        
         this.init();
+    }
+    
+    // Get a random feedback message based on action type and language
+    getRandomFeedback(type) {
+        const messages = this.feedbackMessages[type][this.language];
+        return messages[Math.floor(Math.random() * messages.length)];
+    }
+    
+    // Get a random encouraging message based on current language
+    getRandomEncouragement() {
+        const messages = this.encouragingMessages[this.language];
+        return messages[Math.floor(Math.random() * messages.length)];
     }
 
     init() {
@@ -32,24 +80,43 @@ class BubbleSortGame {
                         <div class="tutorial-content english">
                             <p>Your goal is to sort numbers in ascending order using the bubble sort algorithm.</p>
                             <p>Click SWAP when left number > right number, otherwise click SKIP.</p>
-                            <p>+10 points for correct swaps, -10 for unnecessary swaps!</p>
+                            <p>Earn 10 points for each correct action, lose 10 points for each incorrect action.</p>
                         </div>
                         <div class="tutorial-content chinese" style="display:none;">
                             <p>您的目标是使用冒泡排序算法将数字按升序排列。</p>
                             <p>当左边数字大于右边时点击"交换"，否则点击"跳过"。</p>
-                            <p>正确交换得10分，错误交换扣10分！</p>
+                            <p>正确操作得10分，错误操作扣10分！</p>
                         </div>
                         <button id="startGame" class="english">Start Game</button>
                         <button id="startGame" class="chinese" style="display:none;">开始游戏</button>
                     </div>
                 </div>
                 
-                <h1>
-                    <span class="english">Bubble Sort Game</span>
-                    <span class="chinese" style="display:none;">冒泡排序遊戲</span>
-                </h1>
-                <div class="subtitle english">Sort the numbers in ascending order!</div>
-                <div class="subtitle chinese" style="display:none;">將數字按從小到大排序！</div>
+                <div class="header-container">
+                    <div>
+                        <h1>
+                            <span class="english">Bubble Sort Game</span>
+                            <span class="chinese" style="display:none;">冒泡排序遊戲</span>
+                        </h1>
+                        <div class="subtitle english">Sort the numbers in ascending order!</div>
+                        <div class="subtitle chinese" style="display:none;">將數字按從小到大排序！</div>
+                    </div>
+                    <div class="other-controls">
+                        <div class="difficulty">
+                            <span class="english">Difficulty:</span>
+                            <span class="chinese" style="display:none;">難度:</span>
+                            <select id="difficulty">
+                                <option value="easy">Easy (6)</option>
+                                <option value="medium">Medium (8)</option>
+                                <option value="hard">Hard (10)</option>
+                            </select>
+                        </div>
+                        <button class="new-game">
+                            <span class="english">New Game</span>
+                            <span class="chinese" style="display:none;">新遊戲</span>
+                        </button>
+                    </div>
+                </div>
                 
                 <div class="game-area">
                     ${this.createScoreBoard()}
@@ -57,6 +124,26 @@ class BubbleSortGame {
                     ${this.createControls()}
                     ${this.createTutorial()}
                 </div>
+            </div>
+        `;
+    }
+    
+    createControls() {
+        return `
+            <div class="controls">
+                <div class="core-buttons-container">
+                    <div class="core-buttons">
+                        <button class="swap-btn">
+                            <span class="english">Swap</span>
+                            <span class="chinese" style="display:none;">交換</span>
+                        </button>
+                        <button class="skip-btn">
+                            <span class="english">Skip</span>
+                            <span class="chinese" style="display:none;">跳過</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="feedbackMessage" style="display:none; color: #e74c3c; font-weight: bold; margin: 5px 0; text-align: center;"></div>
             </div>
         `;
     }
@@ -69,12 +156,12 @@ class BubbleSortGame {
                 <span id="bigScore">0</span>
             </div>
             <div class="score-board">
-                <div style="flex: 1; text-align: left;">
+                <div style="flex: 1; text-align: right;">
                     <span class="english">Pass: </span>
                     <span class="chinese" style="display:none;">遍歷次數: </span>
                     <span id="passCount">1</span>
                 </div>
-                <div style="flex: 1; text-align: right;">
+                <div style="flex: 1; text-align: left;">
                     <span class="english">Time: </span>
                     <span class="chinese" style="display:none;">時間: </span>
                     <span id="timer">0</span>s
@@ -83,46 +170,14 @@ class BubbleSortGame {
         `;
     }
 
-    createControls() {
-        return `
-            <div class="controls">
-                <div class="core-buttons">
-                    <button class="swap-btn">
-                        <span class="english">Swap</span>
-                        <span class="chinese" style="display:none;">交換</span>
-                    </button>
-                    <button class="skip-btn">
-                        <span class="english">Skip</span>
-                        <span class="chinese" style="display:none;">跳過</span>
-                    </button>
-                </div>
-                <div id="feedbackMessage" style="display:none; color: #e74c3c; font-weight: bold; margin: 5px 0; text-align: center;"></div>
-                <div class="other-controls">
-                    <button class="new-game">
-                        <span class="english">New Game</span>
-                        <span class="chinese" style="display:none;">新遊戲</span>
-                    </button>
-                    <div class="difficulty">
-                        <span class="english">Difficulty:</span>
-                        <span class="chinese" style="display:none;">難度:</span>
-                        <select id="difficulty">
-                            <option value="easy">Easy (6)</option>
-                            <option value="medium">Medium (8)</option>
-                            <option value="hard">Hard (10)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
 
     createTutorial() {
         return `
             <div class="tutorial">
                 <h3 class="english">How to Play</h3>
                 <h3 class="chinese" style="display:none;">玩法說明</h3>
-                <p class="english">Use the Swap button when the left number is greater than the right number, otherwise use Skip. Earn 10 points for correct swaps, lose 10 points for unnecessary swaps!</p>
-                <p class="chinese" style="display:none;">當左邊數字大於右邊數字時點擊「交換」，否則點擊「跳過」。正確交換得10分，不必要的交換扣10分！</p>
+                <p class="english">Click SWAP when the left number is greater than the right number, otherwise click SKIP. Earn 10 points for each correct action, lose 10 points for each incorrect action.</p>
+                <p class="chinese" style="display:none;">當左邊數字大於右邊數字時點擊「交換」，否則點擊「跳過」。正確操作得10分，錯誤操作扣10分！</p>
                 
                 <div class="algorithm-explanation">
                     <h4 class="english">Bubble Sort Algorithm</h4>
@@ -193,24 +248,6 @@ class BubbleSortGame {
         });
     }
     
-    swapCurrent() {
-        if (this.currentIndex >= this.currentNumbers.length - 1) return;
-        
-        const i = this.currentIndex;
-        const j = i + 1;
-        
-        if (this.currentNumbers[i] > this.currentNumbers[j]) {
-            this.swapNumbers(i, j);
-            this.swapCount++;
-            this.updateScoreBoard();
-        }
-        
-        this.nextStep();
-    }
-    
-    skipCurrent() {
-        this.nextStep();
-    }
 
 
     newGame() {
@@ -247,21 +284,17 @@ class BubbleSortGame {
         
         const i = this.currentIndex;
         const j = i + 1;
+        const shouldSwap = this.currentNumbers[i] > this.currentNumbers[j];
         
-        if (this.currentNumbers[i] > this.currentNumbers[j]) {
+        if (shouldSwap) {
             this.swapNumbers(i, j);
-            this.swapCount++;
-            this.score += 10; // Add 10 points for correct swap
+            this.score += 10; // Correct swap
             this.updateScoreBoard();
+            this.showFeedbackMessage(this.getRandomFeedback('correct'));
         } else {
-            // Deduct points and show message for unnecessary swap
-            this.score = Math.max(0, this.score - 10); // Ensure score doesn't go negative
+            this.score = Math.max(0, this.score - 10); // Incorrect swap
             this.updateScoreBoard();
-            this.showFeedbackMessage(
-                this.language === 'english' ? 
-                "No need to swap! -10 points" : 
-                "不需要交換！扣10分"
-            );
+            this.showFeedbackMessage(this.getRandomFeedback('incorrect'));
         }
         
         this.nextStep();
@@ -275,10 +308,26 @@ class BubbleSortGame {
         feedbackElement.style.display = 'block';
         setTimeout(() => {
             feedbackElement.style.display = 'none';
-        }, 2000);
+        }, 4000); // Show for 4 seconds
     }
     
     skipCurrent() {
+        if (this.currentIndex >= this.currentNumbers.length - 1) return;
+        
+        const i = this.currentIndex;
+        const j = i + 1;
+        const shouldNotSwap = this.currentNumbers[i] <= this.currentNumbers[j];
+        
+        if (shouldNotSwap) {
+            this.score += 10; // Correct skip
+            this.updateScoreBoard();
+            this.showFeedbackMessage(this.getRandomFeedback('correct'));
+        } else {
+            this.score = Math.max(0, this.score - 10); // Incorrect skip
+            this.updateScoreBoard();
+            this.showFeedbackMessage(this.getRandomFeedback('incorrect'));
+        }
+        
         this.nextStep();
     }
     
@@ -289,9 +338,9 @@ class BubbleSortGame {
             this.currentPass++;
             this.updateScoreBoard();
             
-            // Check if game should end after this pass
+            // Always proceed to next pass without early termination
             if (this.checkWin()) {
-                return; // End game immediately
+                return; // Game has ended after completing all passes
             }
             
             this.currentIndex = 0;
@@ -382,27 +431,27 @@ class BubbleSortGame {
     }
 
     checkWin() {
-        // Check if array is sorted
-        if (this.currentNumbers.every((val, i, arr) => !i || arr[i-1] <= val)) {
+        // Only check win condition after completing all passes
+        if (this.currentPass >= this.currentNumbers.length) {
             clearInterval(this.timerInterval);
             const timeTaken = Math.floor((Date.now() - this.startTime) / 1000);
-            setTimeout(() => {
-                alert(this.language === 'english' 
-                    ? `Congratulations! Sorted in ${this.swapCount} swaps and ${timeTaken} seconds!` 
-                    : `恭喜！用了${this.swapCount}次交換，耗時${timeTaken}秒完成排序！`);
-            }, 500);
-            return true; // Game ended
-        } 
-        // End game if max passes reached (n-1 for n elements)
-        else if (this.currentPass >= this.currentNumbers.length - 1) {
-            clearInterval(this.timerInterval);
-            const completedPasses = this.currentNumbers.length - 1;
-            setTimeout(() => {
-                alert(this.language === 'english' 
-                    ? `Game over! The array wasn't sorted after ${completedPasses} passes.` 
-                    : `遊戲結束！經過${completedPasses}次遍歷，數組仍未排序完成。`);
-            }, 500);
-            return true; // Game ended
+            
+            if (this.currentNumbers.every((val, i, arr) => !i || arr[i-1] <= val)) {
+                setTimeout(() => {
+                    alert(this.language === 'english' 
+                        ? `Congratulations! Sorted in ${timeTaken} seconds!` 
+                        : `恭喜！耗時${timeTaken}秒完成排序！`);
+                }, 500);
+                return true; // Game ended with win
+            } else {
+                const completedPasses = this.currentNumbers.length - 1;
+                setTimeout(() => {
+                    alert(this.language === 'english' 
+                        ? `Game over! The array wasn't sorted after ${completedPasses} passes.` 
+                        : `遊戲結束！經過${completedPasses}次遍歷，數組仍未排序完成。`);
+                }, 500);
+                return true; // Game ended with loss
+            }
         }
         return false; // Game continues
     }

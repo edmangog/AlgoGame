@@ -76,6 +76,12 @@
     margin-top: -10px;
 }
 
+.core-buttons-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
 .core-buttons {
     display: flex;
     gap: 15px;
@@ -183,6 +189,19 @@
 
 .difficulty-btn[data-level="hard"] {
     background-color: #ffcdd2;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.other-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 .big-score {
