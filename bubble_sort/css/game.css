@@ -60,6 +60,28 @@
     100% { transform: translateX(0) scale(1.1); }
 }
 
+.number-line {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 5px 0; /* Further reduced top/bottom padding */
+    min-height: 100px;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: -10px;
+}
+
+.core-buttons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px; /* Increased space between core buttons and New Game */
+}
+
 .tutorial {
     background: rgba(78, 205, 196, 0.1);
     padding: 20px;
@@ -78,4 +100,100 @@
 
 .algorithm-explanation li {
     margin-bottom: 5px;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 30px;
+    border-radius: 15px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+.modal-content h2 {
+    color: #3498db;
+    margin-bottom: 20px;
+}
+
+.modal-content button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.modal-content button:hover {
+    background-color: #2980b9;
+}
+
+/* Difficulty selector */
+.difficulty-selector {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.difficulty-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.difficulty-btn {
+    padding: 8px 16px;
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.difficulty-btn:hover {
+    background-color: #d0d0d0;
+}
+
+.difficulty-btn[data-level="easy"] {
+    background-color: #c8e6c9;
+}
+
+.difficulty-btn[data-level="medium"] {
+    background-color: #fff9c4;
+}
+
+.difficulty-btn[data-level="hard"] {
+    background-color: #ffcdd2;
+}
+
+.big-score {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+    color: #2c3e50;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    padding: 5px 15px;
+    background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
