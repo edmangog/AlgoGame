@@ -5,6 +5,7 @@ class BubbleSortGame {
     constructor() {
         this.currentNumbers = [];
         this.swapCount = 0;
+        this.score = 0; // Added scoring system
         this.startTime = Date.now();
         this.timerInterval = null;
         this.language = 'english';
@@ -58,6 +59,11 @@ class BubbleSortGame {
                     <span class="english">Pass: </span>
                     <span class="chinese" style="display:none;">遍歷次數: </span>
                     <span id="passCount">1</span>
+                </div>
+                <div>
+                    <span class="english">Score: </span>
+                    <span class="chinese" style="display:none;">分數: </span>
+                    <span id="score">0</span>
                 </div>
             </div>
         `;
@@ -144,9 +150,11 @@ class BubbleSortGame {
         this.nextStep();
     }
 
+
     newGame() {
         clearInterval(this.timerInterval);
         this.swapCount = 0;
+        this.score = 0; // Reset score
         this.startTime = Date.now();
         this.currentIndex = 0;
         this.currentPass = 1;
@@ -181,6 +189,7 @@ class BubbleSortGame {
         if (this.currentNumbers[i] > this.currentNumbers[j]) {
             this.swapNumbers(i, j);
             this.swapCount++;
+            this.score += 10; // Add 10 points for correct swap
             this.updateScoreBoard();
         }
         
@@ -197,14 +206,14 @@ class BubbleSortGame {
         if (this.currentIndex >= this.currentNumbers.length - 1) {
             this.currentPass++;
             this.updateScoreBoard();
-            this.checkWin();
-            this.currentIndex = 0;
             
-            // Highlight the last pair before resetting
+            // Check if game should end after this pass
+            if (this.checkWin()) {
+                return; // End game immediately
+            }
+            
+            this.currentIndex = 0;
             this.highlightCurrentPair();
-            setTimeout(() => {
-                this.highlightCurrentPair(); // Highlight first pair of next pass
-            }, 300);
         } else {
             this.highlightCurrentPair();
         }
@@ -247,7 +256,6 @@ class BubbleSortGame {
                 setTimeout(() => {
                     items[i].classList.remove('swapping');
                     items[j].classList.remove('swapping');
-                    this.resetSelection();
                     
                     // Check if swap was optimal
                     if (this.isOptimalSwap(i, j)) {
@@ -288,6 +296,7 @@ class BubbleSortGame {
     updateScoreBoard() {
         this.app.querySelector('#swapCount').textContent = this.swapCount;
         this.app.querySelector('#passCount').textContent = this.currentPass;
+        this.app.querySelector('#score').textContent = this.score; // Update score display
     }
 
     checkWin() {
@@ -298,19 +307,22 @@ class BubbleSortGame {
             setTimeout(() => {
                 alert(this.language === 'english' 
                     ? `Congratulations! Sorted in ${this.swapCount} swaps and ${timeTaken} seconds!` 
-                    : `恭喜！用了${this.swapCount}次交換，時間${timeTaken}秒！`);
+                    : `恭喜！用了${this.swapCount}次交換，耗時${timeTaken}秒完成排序！`);
             }, 500);
+            return true; // Game ended
         } 
-        // Continue if not sorted
-        else if (this.currentPass > this.currentNumbers.length - 1) {
-            // Shouldn't need more than n-1 passes
+        // End game if max passes reached (n-1 for n elements)
+        else if (this.currentPass >= this.currentNumbers.length - 1) {
             clearInterval(this.timerInterval);
+            const completedPasses = this.currentNumbers.length - 1;
             setTimeout(() => {
                 alert(this.language === 'english' 
-                    ? `Game over! The array wasn't sorted after ${this.currentPass} passes.` 
-                    : `遊戲結束！經過${this.currentPass}次遍歷，數組仍未排序。`);
+                    ? `Game over! The array wasn't sorted after ${completedPasses} passes.` 
+                    : `遊戲結束！經過${completedPasses}次遍歷，數組仍未排序完成。`);
             }, 500);
+            return true; // Game ended
         }
+        return false; // Game continues
     }
 
     showHint() {
