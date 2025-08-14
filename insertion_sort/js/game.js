@@ -52,6 +52,7 @@ class InsertionSortGame {
                 </div>
                 
                 <div class="game-area">
+                    <div class="score-animation-container"></div>
                     <button class="lang-toggle">中/Eng</button>
                     <div class="score-board">
                         <div class="score-display">
@@ -205,8 +206,8 @@ class InsertionSortGame {
                     this.updateScoreBoard();
                     this.showFeedbackMessage(
                         this.language === 'english' ? 
-                        "Great! Moved key to correct position +10 points" : 
-                        "太棒了！已將關鍵元素移動到正確位置 +10分"
+                        "Great! Moved key to correct position +10 points 🎉" : 
+                        "太棒了！已將關鍵元素移動到正確位置 +10分 🎉"
                     );
                     this.showScoreAnimation(10);
                 }, 400);
@@ -214,8 +215,8 @@ class InsertionSortGame {
         } else {
             this.showFeedbackMessage(
                 this.language === 'english' ? 
-                "Key doesn't need to move here - try again" : 
-                "關鍵元素不需要移動 - 請再試一次"
+                "Key doesn't need to move here - try again 😅" : 
+                "關鍵元素不需要移動 - 請再試一次 😅"
             );
         }
         this.updateScoreBoard(); // Update UI with new move count
@@ -237,8 +238,8 @@ class InsertionSortGame {
             this.updateScoreBoard();
             this.showFeedbackMessage(
                 this.language === 'english' ? 
-                "Good choice! Key is in position +10 points" : 
-                "正確選擇！關鍵元素已在正確位置 +10分"
+                "Good choice! Key is in position +10 points 👍" : 
+                "正確選擇！關鍵元素已在正確位置 +10分 👍"
             );
             this.showScoreAnimation(10);
             
@@ -255,31 +256,27 @@ class InsertionSortGame {
         } else {
             this.showFeedbackMessage(
                 this.language === 'english' ? 
-                "Key still needs sorting - try swapping" : 
-                "關鍵元素仍需排序 - 請嘗試交換"
+                "Key still needs sorting - try swapping 🔄" : 
+                "關鍵元素仍需排序 - 請嘗試交換 🔄"
             );
         }
         this.updateScoreBoard(); // Update UI with new move count
     }
     
     showScoreAnimation(points) {
-        const feedbackElement = document.getElementById('feedbackMessage');
-        if (!feedbackElement) return;
+        const container = this.app.querySelector('.score-animation-container');
+        if (!container) return;
         
         const animElement = document.createElement('div');
-        animElement.className = 'score-animation';
-        animElement.textContent = `+${points}`;
-        animElement.style.position = 'absolute';
-        animElement.style.color = '#4CAF50';
-        animElement.style.fontWeight = 'bold';
-        animElement.style.fontSize = '20px';
-        animElement.style.animation = 'floatUp 1s ease-out';
+        animElement.className = 'score-change';
+        animElement.textContent = points > 0 ? `+${points}` : `${points}`;
+        animElement.classList.add(points > 0 ? 'positive-change' : 'negative-change');
         
-        feedbackElement.parentNode.appendChild(animElement);
+        container.appendChild(animElement);
         
         setTimeout(() => {
             animElement.remove();
-        }, 1000);
+        }, 1500);
     }
 
     showFeedbackMessage(message) {

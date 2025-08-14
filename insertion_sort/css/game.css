@@ -174,6 +174,8 @@
     background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    min-width: 400px; /* Wider than the array */
+    justify-content: center; /* Center content horizontally */
 }
 
 .time-row {
@@ -185,5 +187,48 @@
 }
 
 .timer-value {
+    font-weight: none;
+}
+
+/* Score animation container */
+.score-animation-container {
+    position: relative;
+    height: 40px;
+    margin-top: -40px; /* Align vertically with score row */
+    text-align: center;
+}
+
+.score-change {
+    position: absolute;
     font-weight: bold;
+    font-size: 24px;
+    z-index: 100;
+    animation: scoreChangeAnimation 1.5s ease-out;
+    pointer-events: none;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+}
+
+@keyframes scoreChangeAnimation {
+    0% {
+        transform: translate(-50%, -50px);
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, 0);
+        opacity: 0;
+    }
+}
+
+.positive-change {
+    color: #2ecc71; /* Green for positive changes */
+}
+
+.negative-change {
+    color: #e74c3c; /* Red for negative changes */
 }
