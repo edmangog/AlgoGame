@@ -459,6 +459,10 @@ class BubbleSortGame {
             clearInterval(this.timerInterval);
             const timeTaken = Math.floor((Date.now() - this.startTime) / 1000);
             
+            // Set pass count to n-1 before showing results
+            this.currentPass = this.currentNumbers.length - 1;
+            this.updateScoreBoard();
+            
             if (this.currentNumbers.every((val, i, arr) => !i || arr[i-1] <= val)) {
                 setTimeout(() => {
                     alert(this.language === 'english' 
