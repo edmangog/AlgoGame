@@ -79,7 +79,6 @@
 .core-buttons-container {
     display: flex;
     justify-content: center;
-    margin: 20px 0;
 }
 
 .core-buttons {
@@ -106,6 +105,55 @@
 
 .algorithm-explanation li {
     margin-bottom: 5px;
+}
+
+/* Score change animation */
+.score-animation-container {
+    position: relative;
+    height: 40px; /* Space for animations */
+    margin-bottom: 10px; /* Padding between animation and score */;
+    left: 5%;
+}
+
+.score-change {
+    position: absolute;
+    font-weight: bold;
+    font-size: 24px;
+    z-index: 100;
+    animation: scoreChangeAnimation 1.5s ease-out;
+    pointer-events: none;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+}
+
+@keyframes scoreChangeAnimation {
+    0% {
+        transform: translate(-50%, -50px);
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, 0);
+        opacity: 0;
+    }
+}
+
+.positive-change {
+    color: #2ecc71; /* Green for positive changes */
+}
+
+.negative-change {
+    color: #e74c3c; /* Red for negative changes */
+}
+
+.big-score {
+    position: relative;
+    overflow: visible;
+    margin-top: 10px; /* Additional spacing */
 }
 
 /* Modal styles */

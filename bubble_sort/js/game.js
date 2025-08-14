@@ -15,34 +15,34 @@ class BubbleSortGame {
         this.feedbackMessages = {
             correct: {
                 english: [
-                    "Awesome! 😊 +10 points!",
-                    "Perfect move! 🌟 +10 points!",
-                    "Great decision! 👍 +10 points!",
-                    "Well done! 🎉 +10 points!",
-                    "Excellent choice! 💯 +10 points!"
+                    "Awesome! 😊 ",
+                    "Perfect move! 🌟 ",
+                    "Great decision! 👍",
+                    "Well done! 🎉 ",
+                    "Excellent choice! 💯!"
                 ],
                 chinese: [
-                    "太棒了！😊 +10分！",
-                    "完美的選擇！🌟 +10分！",
-                    "明智的決定！👍 +10分！",
-                    "做得好！🎉 +10分！",
-                    "出色的選擇！💯 +10分！"
+                    "太棒了！😊 ",
+                    "完美的選擇！🌟 ",
+                    "明智的決定！👍 ",
+                    "做得好！🎉 ",
+                    "出色的選擇！💯 "
                 ]
             },
             incorrect: {
                 english: [
-                    "Oops! -10 points. Don't worry, keep going! 💪",
-                    "Not quite! -10 points. You'll get it next time! 😊",
-                    "Mistakes happen! -10 points. Keep learning! 🌟",
-                    "Almost! -10 points. You're making progress! 👍",
-                    "No problem! -10 points. Every expert was a beginner! 🎓"
+                    "Oops! Don't worry, keep going! 💪",
+                    "Not quite! You'll get it next time! 😊",
+                    "Mistakes happen!  Keep learning! 🌟",
+                    "Almost!  You're making progress! 👍",
+                    "No problem!  Every expert was a beginner! 🎓"
                 ],
                 chinese: [
-                    "哎呀！扣10分。別擔心，繼續加油！💪",
-                    "差一點！扣10分。下次會更好！😊",
-                    "犯錯是學習的一部分！扣10分。繼續進步！🌟",
-                    "接近了！扣10分。你正在進步！👍",
-                    "沒關係！扣10分。每個專家都曾是新手！🎓"
+                    "哎呀！別擔心，繼續加油！💪",
+                    "差一點！下次會更好！😊",
+                    "犯錯是學習的一部分！繼續進步！🌟",
+                    "接近了！你正在進步！👍",
+                    "沒關係！每個專家都曾是新手！🎓"
                 ]
             }
         };
@@ -150,6 +150,7 @@ class BubbleSortGame {
 
     createScoreBoard() {
         return `
+            <div class="score-animation-container"></div>
             <div class="big-score">
                 <span class="english">SCORE: </span>
                 <span class="chinese" style="display:none;">分數: </span>
@@ -290,14 +291,34 @@ class BubbleSortGame {
             this.swapNumbers(i, j);
             this.score += 10; // Correct swap
             this.updateScoreBoard();
+            this.showScoreAnimation(10); // Show +10 animation
             this.showFeedbackMessage(this.getRandomFeedback('correct'));
         } else {
             this.score = Math.max(0, this.score - 10); // Incorrect swap
             this.updateScoreBoard();
+            this.showScoreAnimation(-10); // Show -10 animation
             this.showFeedbackMessage(this.getRandomFeedback('incorrect'));
         }
         
         this.nextStep();
+    }
+    
+    showScoreAnimation(pointsChange) {
+        const animationContainer = this.app.querySelector('.score-animation-container');
+        if (!animationContainer) return;
+        
+        // Create animation element
+        const animElement = document.createElement('div');
+        animElement.className = `score-change ${pointsChange > 0 ? 'positive-change' : 'negative-change'}`;
+        animElement.textContent = (pointsChange > 0 ? '🌟 +' : '📖 ') + pointsChange;
+        
+        // Add to animation container
+        animationContainer.appendChild(animElement);
+        
+        // Remove after animation completes
+        setTimeout(() => {
+            animElement.remove();
+        }, 1500);
     }
     
     showFeedbackMessage(message) {
@@ -321,10 +342,12 @@ class BubbleSortGame {
         if (shouldNotSwap) {
             this.score += 10; // Correct skip
             this.updateScoreBoard();
+            this.showScoreAnimation(10); // Show +10 animation
             this.showFeedbackMessage(this.getRandomFeedback('correct'));
         } else {
             this.score = Math.max(0, this.score - 10); // Incorrect skip
             this.updateScoreBoard();
+            this.showScoreAnimation(-10); // Show -10 animation
             this.showFeedbackMessage(this.getRandomFeedback('incorrect'));
         }
         
@@ -454,26 +477,6 @@ class BubbleSortGame {
             }
         }
         return false; // Game continues
-    }
-
-    showHint() {
-        const i = this.currentIndex;
-        const j = i + 1;
-        if (i >= this.currentNumbers.length - 1) {
-            return;
-        }
-        const left = this.currentNumbers[i];
-        const right = this.currentNumbers[j];
-        const shouldSwap = left > right;
-        
-        const message = this.language === 'english' ?
-            `We're comparing the numbers at positions ${i} and ${j}: ${left} and ${right}. ` +
-            `Since we're sorting in ascending order, ${shouldSwap ? 'you should swap them because ' + left + ' > ' + right : 'you should NOT swap them because ' + left + ' ≤ ' + right}.`
-            :
-            `我們正在比較位置 ${i} 和 ${j} 的數字: ${left} 和 ${right}。` +
-            `由於我們要升冪排序，${shouldSwap ? '你應該交換它們，因為 ' + left + ' > ' + right : '你不應該交換它們，因為 ' + left + ' ≤ ' + right}。`;
-        
-        this.showFeedbackMessage(message);
     }
 
     findNextOptimalSwap() {
