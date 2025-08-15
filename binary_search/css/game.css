@@ -1,0 +1,223 @@
+/* Binary Search Game Styles */
+.header-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.other-controls {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.difficulty select {
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    background: white;
+    font-size: 0.9rem;
+}
+
+.number-line {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.number-box {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--secondary);
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 5px;
+    border-radius: 8px;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    cursor: pointer; /* Add pointer cursor */
+}
+
+.target-element {
+    box-shadow: 0 0 0 3px #FFD700, 0 0 15px #FFA500;
+    animation: pulse 2s infinite;
+    position: relative;
+}
+
+.target-element::after {
+    content: 'Target';
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: gold;
+    color: black;
+    padding: 3px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.7); }
+    50% { box-shadow: 0 0 0 8px rgba(255, 165, 0, 0.4); }
+    100% { box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.7); }
+}
+
+.annotation {
+    position: absolute;
+    bottom: -30px; /* Increased space below elements */
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--text-dark);
+    z-index: 10; /* Ensure annotations appear above other elements */
+    white-space: nowrap; /* Prevent wrapping */
+}
+
+.annotation.left { left: 50%; transform: translateX(-50%); }
+.annotation.mid { left: 50%; transform: translateX(-50%); }
+.annotation.right { left: 50%; transform: translateX(-50%); }
+
+.number-line {
+    position: relative;
+    min-height: 100px; /* Ensure enough space for annotations */
+    padding-bottom: 10px; /* Add padding at bottom for annotations */
+}
+
+.eliminated {
+    opacity: 0.3;
+    background-color: #ccc;
+}
+
+.core-buttons {
+    display: flex;
+    gap: 8px; /* Reduced gap between buttons */
+    margin-top: 20px;
+    justify-content: center; /* Center buttons horizontally */
+}
+
+.core-buttons button {
+    flex: none; /* Allow buttons to shrink */
+    padding: 8px 16px; /* Smaller padding */
+    font-size: 14px; /* Slightly smaller font */
+    transition: all 0.3s ease;
+}
+
+.core-buttons button.disabled-button {
+    background: #cccccc !important;
+    color: #666666 !important;
+    cursor: not-allowed;
+    transform: none !important;
+    opacity: 0.7;
+}
+
+.feedback-message {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    min-height: 30px;
+}
+
+/* Visual indicators for boundary setting mode */
+.number-box.active {
+    background-color: #4ECDC4; /* Teal color for active search range */
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+
+/* Score change animation */
+.score-animation-container {
+    position: relative;
+    height: 40px; /* Space for animations */
+    margin-bottom: 10px; /* Padding between animation and score */
+    left: 5%;
+}
+
+.score-change {
+    position: absolute;
+    font-weight: bold;
+    font-size: 24px;
+    z-index: 100;
+    animation: scoreChangeAnimation 1.5s ease-out;
+    pointer-events: none;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+}
+
+@keyframes scoreChangeAnimation {
+    0% {
+        transform: translate(-50%, -50px);
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, 0);
+        opacity: 0;
+    }
+}
+
+.positive-change {
+    color: #2ecc71; /* Green for positive changes */
+}
+
+.negative-change {
+    color: #e74c3c; /* Red for negative changes */
+}
+
+.big-score {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+    color: #2c3e50;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    padding: 5px 15px;
+    background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .other-controls {
+        margin-top: 10px;
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .number-box {
+        width: 50px;
+        height: 50px;
+        font-size: 1rem;
+    }
+    
+    .annotation {
+        bottom: -35px; /* More space on mobile */
+        font-size: 0.8rem;
+    }
+    
+    .big-score {
+        font-size: 24px; /* Slightly smaller on mobile */
+    }
+}
