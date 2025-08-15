@@ -37,30 +37,66 @@
 </head>
 <body>
     <div class="header">
-        <h1>Learn Algorithms Through Play</h1>
-        <p>Choose a game to start your algorithmic journey</p>
+        <h1>
+            <span class="english">Learn Algorithms Through Play</span>
+            <span class="chinese" style="display:none">透過遊戲學習演算法</span>
+        </h1>
+        <p>
+            <span class="english">Choose a game and start your journey into the world of algorithms!</span>
+            <span class="chinese" style="display:none">選擇遊戲開始您的演算法之旅</span>
+        </p>
     </div>
+    <button class="lang-toggle">中/Eng</button>
 
     <div class="game-grid">
         <a href="bubble_sort/index.html" class="game-card">
-            <h2 class="game-title">Bubble Sort Game</h2>
-            <p>Sort numbers by swapping adjacent elements in this classic sorting challenge. Can you sort the array before the time runs out? Test your skills and learn the fundamentals of sorting algorithms!</p>
+            <h2 class="game-title">
+                <span class="english">Bubble Sort Game</span>
+                <span class="chinese" style="display:none">氣泡排序遊戲</span>
+            </h2>
+            <p>
+                <span class="english">Sort numbers by swapping adjacent elements in this classic sorting challenge. See how quickly you can arrange the array while mastering the fundamentals of sorting algorithms!</span>
+                <span class="chinese" style="display:none">在這個經典的排序挑戰中，透過交換相鄰元素來完成排序。看看你能多快排好整個陣列，同時掌握排序演算法的基礎！</span>
+            </p>
         </a>
 
         <a href="insertion_sort/index.html" class="game-card">
-            <h2 class="game-title">Insertion Sort Game</h2>
-            <p>Build your sorted array one item at a time. Insert the KEY element into its correct position in the sorted portion!</p>
+            <h2 class="game-title">
+                <span class="english">Insertion Sort Game 1</span>
+                <span class="chinese" style="display:none">插入排序遊戲 1</span>
+            </h2>
+            <p>
+                <span class="english">Build the sorted list by repeatedly <b>swapping</b> the key element with its left neighbor until it is in the correct position!</span>
+                <span class="chinese" style="display:none">透過不斷將「關鍵元素」與左邊相鄰元素交換，直到放在正確位置來建立排序好的清單！</span>
+            </p>
+        </a>
+
+        <a href="insertion_sortS/index.html" class="game-card">
+            <h2 class="game-title">
+                <span class="english">Insertion Sort Game 2</span>
+                <span class="chinese" style="display:none">插入排序遊戲 2</span>
+            </h2>
+            <p>
+                <span class="english">Build the sorted list by <b>shifting</b> elements to make space and inserting the key element into its correct position!</span>
+                <span class="chinese" style="display:none">將元素依序移動以騰出空間，再將「關鍵元素」插入正確位置，逐步完成排序</span>
+            </p>
         </a>
 
         <div class="game-card coming-soon">
-            <h2 class="game-title">Binary Search Game</h2>
-            <p>(Coming Soon) Master divide-and-conquer searching</p>
-        </div>
-        
-        <div class="game-card coming-soon">
-            <h2 class="game-title">Shift-Based Insertion Sort</h2>
-            <p>(Coming Soon) Sort elements using arrow keys in this engaging game for K12 students</p>
+            <h2 class="game-title">
+                <span class="english">Binary Search Game</span>
+                <span class="chinese" style="display:none">二元搜尋遊戲</span>
+            </h2>
+            <p>
+                <span class="english">(Coming Soon) Master divide-and-conquer searching</span>
+                <span class="chinese" style="display:none">(即將推出) 掌握分治搜尋法</span>
+            </p>
         </div>
     </div>
+    
+    <script type="module">
+        import { setupLanguageToggle } from './shared/js/lang-toggle.js';
+        setupLanguageToggle();
+    </script>
 </body>
 </html>
