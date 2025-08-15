@@ -13,6 +13,25 @@ class InsertionSortGame {
         this.language = 'english';
         this.sorted = false;     // Track if array is fully sorted
         this.originalKeyValue = null; // Store original key value during shifting
+        
+        // Encouraging messages for user feedback
+        this.feedbackMessages = {
+            correct: [
+                "Great job! 😊 Keep it up!",
+                "Awesome! 👍 You're learning fast!",
+                "Perfect! 🌟 Sorting master!",
+                "Well done! 🎉 That was correct!",
+                "Excellent! 💯 You've got this!"
+            ],
+            incorrect: [
+                "Oops! Try again! 💪 You'll get it!",
+                "Don't worry! 😅 Mistakes help us learn!",
+                "Almost! ✨ Try a different approach!",
+                "Not quite! 📚 Remember the algorithm!",
+                "Keep trying! 👏 You're making progress!"
+            ]
+        };
+        
         this.init();
     }
 
@@ -189,16 +208,16 @@ class InsertionSortGame {
             this.score += 10;
             this.showFeedbackMessage(
                 this.language === 'english' ? 
-                "Shifted element! +10 points 🔄" : 
-                "元素已移動！+10分 🔄"
+                this.feedbackMessages.correct[Math.floor(Math.random() * this.feedbackMessages.correct.length)] : 
+                "元素已移動！"
             );
             this.showScoreAnimation(10);
         } else {
             this.score = Math.max(0, this.score - 10);
             this.showFeedbackMessage(
                 this.language === 'english' ? 
-                "Can't shift - element is smaller! -10 points ❌" : 
-                "無法移動 - 元素較小！-10分 ❌"
+                this.feedbackMessages.incorrect[Math.floor(Math.random() * this.feedbackMessages.incorrect.length)] : 
+                "無法移動 - 元素較小！"
             );
             this.showScoreAnimation(-10);
         }
@@ -228,8 +247,8 @@ class InsertionSortGame {
             this.score += 10;
             this.showFeedbackMessage(
                 this.language === 'english' ? 
-                "Key inserted! +10 points ✅" : 
-                "關鍵元素已插入！+10分 ✅"
+                this.feedbackMessages.correct[Math.floor(Math.random() * this.feedbackMessages.correct.length)] : 
+                "關鍵元素已插入！"
             );
             this.showScoreAnimation(10);
             
@@ -251,8 +270,8 @@ class InsertionSortGame {
             this.score = Math.max(0, this.score - 10);
             this.showFeedbackMessage(
                 this.language === 'english' ? 
-                "Invalid insert! Shift elements first -10 points ❌" : 
-                "插入無效！請先移動元素 -10分 ❌"
+                this.feedbackMessages.incorrect[Math.floor(Math.random() * this.feedbackMessages.incorrect.length)] : 
+                "插入無效！請先移動元素"
             );
             this.showScoreAnimation(-10);
             this.updateScoreBoard();
@@ -281,7 +300,8 @@ class InsertionSortGame {
         
         const animElement = document.createElement('div');
         animElement.className = 'score-change';
-        animElement.textContent = points > 0 ? `+${points}` : `${points}`;
+        // Use encouraging emojis suitable for K12 students
+        animElement.textContent = points > 0 ? `🌟 +${points}` : `📚 ${points}`;
         animElement.classList.add(points > 0 ? 'positive-change' : 'negative-change');
         
         container.appendChild(animElement);

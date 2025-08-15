@@ -67,13 +67,14 @@ select, .new-game {
 .score-board {
     margin-bottom: 20px;
     text-align: center;
+    margin: 0px 0px 5% 0px;
 }
 
 .big-score {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 5px 0;
+    margin: 0px 0px 10px 0px;
     font-size: 28px;
     font-weight: bold;
     color: #2c3e50;
@@ -229,7 +230,6 @@ select, .new-game {
 .score-animation-container {
     position: relative;
     height: 40px;
-    margin-bottom: 10px;
     left: 5%;
 }
 
