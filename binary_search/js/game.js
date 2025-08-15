@@ -111,8 +111,8 @@ class BinarySearchGame {
                     
                     <div class="score-board">
                         <div style="flex: 1; text-align: right;">
-                            <span class="english">Steps: </span>
-                            <span class="chinese" style="display:none;">步驟: </span>
+                            <span class="english">Iterations: </span>
+                            <span class="chinese" style="display:none;">迭代次數: </span>
                             <span id="stepCount">0</span>
                         </div>
                         <div style="flex: 1; text-align: left;">
