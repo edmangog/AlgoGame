@@ -181,8 +181,12 @@ class BinarySearchGame {
         if (difficulty === 'medium') size = 12;
         if (difficulty === 'hard') size = 20;
         
-        // Generate sorted array
-        this.array = Array.from({length: size}, () => Math.floor(Math.random() * 100) + 1);
+        // Generate sorted array with unique values
+        const values = new Set();
+        while (values.size < size) {
+            values.add(Math.floor(Math.random() * 100) + 1);
+        }
+        this.array = Array.from(values);
         this.array.sort((a, b) => a - b);
         
         // Select random target
