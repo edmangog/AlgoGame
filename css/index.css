@@ -1,0 +1,93 @@
+/* Styles specific to index.html */
+
+body {
+    background: linear-gradient(135deg, #f0f8ff, #e6f7ff); /* Light blue gradient */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    margin-bottom: 3rem;
+}
+
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    flex-grow: 1;
+}
+
+.game-card {
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: var(--card-background);
+    box-shadow: 0 8px 16px var(--shadow-light);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: var(--text-dark);
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.game-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, var(--primary) 0%, var(--secondary) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.game-card:hover::before {
+    opacity: 0.1;
+}
+
+.game-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 24px var(--shadow-medium);
+    border-color: var(--primary);
+}
+
+.game-title {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--primary);
+    margin-bottom: 0.8rem;
+    font-size: 1.3rem; /* Reduced from 1.5rem */
+    text-shadow: 2px 2px rgba(0,0,0,0.1);
+    transition: color 0.3s ease;
+}
+
+.game-card:hover .game-title {
+    color: var(--accent-blue);
+}
+
+.game-card p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+/* Footer (optional, but good for completeness) */
+.footer {
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 3rem;
+    background-color: var(--text-dark);
+    color: var(--text-light);
+    font-size: 0.9rem;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+}
