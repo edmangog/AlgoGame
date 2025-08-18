@@ -127,3 +127,22 @@ button:hover {
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 6px 12px var(--shadow-medium);
 }
+
+.home-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px; /* Add some space above the button */
+    text-decoration: none; /* Remove underline from link */
+    color: var(--primary); /* Example color, can be adjusted */
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.home-button:hover {
+    color: var(--accent-blue); /* Example hover color */
+}
+
+.home-button { /* Styling for the emoji */
+    margin-right: 8px;
+}
