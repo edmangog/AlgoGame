@@ -495,18 +495,28 @@ class BinarySearchGame {
         
         if (this.gameState === 'won') {
             this.showFeedback(this.language === 'english' 
-                ? `Congratulations! Found in ${this.steps} steps!` 
-                : `恭喜！用了 ${this.steps} 步找到目標！`);
+                ? `Congratulations! Found in ${this.steps} steps! Starting new game...` 
+                : `恭喜！用了 ${this.steps} 步找到目標！即將開始新遊戲...`);
             this.disableAllButtons();
+            
+            // Start a new game after showing the message
+            setTimeout(() => {
+                this.newGame();
+            }, 600);
             return;
         }
         
         if (this.left > this.right) {
             this.gameState = 'lost';
             this.showFeedback(this.language === 'english' 
-                ? 'Target not found! Try again.' 
-                : '未找到目標！請再試一次。');
+                ? 'Target not found! Starting new game...' 
+                : '未找到目標！即將開始新遊戲...');
             this.disableAllButtons();
+            
+            // Start a new game after showing the message
+            setTimeout(() => {
+                this.newGame();
+            }, 600);
         }
     }
 

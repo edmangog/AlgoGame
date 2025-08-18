@@ -249,8 +249,11 @@ class InsertionSortGame {
                 const timeTaken = Math.floor((Date.now() - this.startTime) / 1000);
                 setTimeout(() => {
                     alert(this.language === 'english' 
-                        ? `Congratulations! Sorted in ${timeTaken} seconds!` 
-                        : `恭喜！耗時${timeTaken}秒完成排序！`);
+                        ? `Congratulations! Sorted in ${timeTaken} seconds! Starting new game...` 
+                        : `恭喜！耗時${timeTaken}秒完成排序！即將開始新遊戲...`);
+                    setTimeout(() => {
+                        this.newGame();
+                    }, 600);
                 }, 500);
             }
         } else {

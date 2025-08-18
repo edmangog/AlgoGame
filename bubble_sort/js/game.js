@@ -466,16 +466,22 @@ class BubbleSortGame {
             if (this.currentNumbers.every((val, i, arr) => !i || arr[i-1] <= val)) {
                 setTimeout(() => {
                     alert(this.language === 'english' 
-                        ? `Congratulations! Sorted in ${timeTaken} seconds!` 
-                        : `恭喜！耗時${timeTaken}秒完成排序！`);
+                        ? `Congratulations! Sorted in ${timeTaken} seconds! Starting new game...` 
+                        : `恭喜！耗時${timeTaken}秒完成排序！即將開始新遊戲...`);
+                    setTimeout(() => {
+                        this.newGame();
+                    }, 600);
                 }, 500);
                 return true; // Game ended with win
             } else {
                 const completedPasses = this.currentNumbers.length - 1;
                 setTimeout(() => {
                     alert(this.language === 'english' 
-                        ? `Game over! The array wasn't sorted after ${completedPasses} passes.` 
-                        : `遊戲結束！經過${completedPasses}次遍歷，數組仍未排序完成。`);
+                        ? `Game over! The array wasn't sorted after ${completedPasses} passes. Starting new game...` 
+                        : `遊戲結束！經過${completedPasses}次遍歷，數組仍未排序完成。即將開始新遊戲...`);
+                    setTimeout(() => {
+                        this.newGame();
+                    }, 600);
                 }, 500);
                 return true; // Game ended with loss
             }

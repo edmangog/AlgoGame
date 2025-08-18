@@ -289,8 +289,11 @@ class InsertionSortGame {
         
         setTimeout(() => {
             alert(this.language === 'english' 
-                ? `Game completed in ${timeTaken} seconds! Final score: ${this.score}` 
-                : `遊戲完成！耗時${timeTaken}秒，最終分數: ${this.score}`);
+                ? `Game completed in ${timeTaken} seconds! Final score: ${this.score} Starting new game...` 
+                : `遊戲完成！耗時${timeTaken}秒，最終分數: ${this.score} 即將開始新遊戲...`);
+            setTimeout(() => {
+                this.newGame();
+            }, 600);
         }, 500);
     }
 
