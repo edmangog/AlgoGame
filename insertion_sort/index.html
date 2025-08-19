@@ -9,8 +9,17 @@
     <link rel="stylesheet" href="css/game.css">
 </head>
 <body>
-    <div id="app"></div>
+    <div id="app">
+        <div class="big-score">Score/Max: 0/0</div>
+    </div>
     <a href="../index.html" class="home-button">🏠 Go Back Home</a>
+
+    <!-- Sound Effects -->
+    <audio id="correctSound" src="assets/sounds/correct.mp3" preload="auto"></audio>
+    <audio id="incorrectSound" src="assets/sounds/incorrect.mp3" preload="auto"></audio>
+    <audio id="winSound" src="assets/sounds/win.mp3" preload="auto"></audio>
+    <audio id="loseSound" src="assets/sounds/lose.mp3" preload="auto"></audio>
+
     <script type="module" src="js/game.js"></script>
 </body>
 </html>

@@ -23,6 +23,12 @@ class InsertionSortGame {
 
     setupDOM() {
         this.app = document.getElementById('app');
+        // Get audio elements for sound effects
+        this.correctSound = document.getElementById('correctSound');
+        this.incorrectSound = document.getElementById('incorrectSound');
+        this.winSound = document.getElementById('winSound');
+        this.loseSound = document.getElementById('loseSound');
+
         this.app.innerHTML = `
             <div class="container">
                 <div class="header-container">
@@ -57,9 +63,9 @@ class InsertionSortGame {
                     <div class="score-board">
                         <div class="score-display">
                             <div class="score-row big-score">
-                                <div class="english">SCORE: </div>
-                                <div class="chinese" style="display:none;">分數: </div>
-                                <div id="score">0</div>
+                                <div class="english">Score/Max: </div>
+                                <div class="chinese" style="display:none;">分數/最高分: </div>
+                                <div id="scoreOutOfMax">0/0</div>
                             </div>
                             <div class="time-row">
                                 <div class="english">Time: </div>
@@ -210,6 +216,7 @@ class InsertionSortGame {
                         "太棒了！已將關鍵元素移動到正確位置 +10分 🎉"
                     );
                     this.showScoreAnimation(10);
+                    this.playCorrectSound(); // Play sound for correct swap
                 }, 400);
             }, 400);
         } else {
@@ -218,6 +225,7 @@ class InsertionSortGame {
                 "Key doesn't need to move here - try again 😅" : 
                 "關鍵元素不需要移動 - 請再試一次 😅"
             );
+            this.playIncorrectSound(); // Play sound for incorrect swap
         }
         this.updateScoreBoard(); // Update UI with new move count
     }
@@ -242,12 +250,14 @@ class InsertionSortGame {
                 "正確選擇！關鍵元素已在正確位置 +10分 👍"
             );
             this.showScoreAnimation(10);
+            this.playCorrectSound(); // Play sound for correct skip
             
             // Check if game completed
             if (this.keyIndex >= this.currentNumbers.length) {
                 clearInterval(this.timerInterval);
                 const timeTaken = Math.floor((Date.now() - this.startTime) / 1000);
                 setTimeout(() => {
+                    this.playWinSound(); // Play win sound
                     alert(this.language === 'english' 
                         ? `Congratulations! Sorted in ${timeTaken} seconds! Starting new game...` 
                         : `恭喜！耗時${timeTaken}秒完成排序！即將開始新遊戲...`);
@@ -262,6 +272,9 @@ class InsertionSortGame {
                 "Key still needs sorting - try swapping 🔄" : 
                 "關鍵元素仍需排序 - 請嘗試交換 🔄"
             );
+            this.playIncorrectSound(); // Play sound for incorrect skip
+            // Potentially add a lose condition here, e.g., after too many incorrect moves
+            // For now, just play incorrect sound.
         }
         this.updateScoreBoard(); // Update UI with new move count
     }
@@ -301,7 +314,35 @@ class InsertionSortGame {
     }
 
     updateScoreBoard() {
-        this.app.querySelector('#score').textContent = this.score;
+        const scoreOutOfMaxElement = this.app.querySelector('#scoreOutOfMax');
+        if (scoreOutOfMaxElement) {
+            const potentialMaxScore = this.moveCount * 10;
+            scoreOutOfMaxElement.textContent = `${this.score}/${potentialMaxScore}`;
+        }
+    }
+
+    playCorrectSound() {
+        if (this.correctSound) {
+            this.correctSound.play().catch(e => console.error("Error playing correct sound:", e));
+        }
+    }
+
+    playIncorrectSound() {
+        if (this.incorrectSound) {
+            this.incorrectSound.play().catch(e => console.error("Error playing incorrect sound:", e));
+        }
+    }
+
+    playWinSound() {
+        if (this.winSound) {
+            this.winSound.play().catch(e => console.error("Error playing win sound:", e));
+        }
+    }
+
+    playLoseSound() {
+        if (this.loseSound) {
+            this.loseSound.play().catch(e => console.error("Error playing lose sound:", e));
+        }
     }
 }
 
