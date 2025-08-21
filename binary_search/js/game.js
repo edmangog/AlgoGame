@@ -695,7 +695,15 @@ class BinarySearchGame {
         localStorage.setItem('binarySearchVisited', 'true'); // Mark as visited
         this.hasVisited = true;
         this.gameState = 'playing'; // Set game state to playing before starting new game
+        this.showGameDescription(); // Show game description
         this.newGame(); // Start the game
+    }
+
+    showGameDescription() {
+        const gameDescriptionElement = document.getElementById('game-description');
+        if (gameDescriptionElement) {
+            gameDescriptionElement.style.display = 'block';
+        }
     }
 }
 
