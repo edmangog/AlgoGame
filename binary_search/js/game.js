@@ -16,6 +16,12 @@ class BinarySearchGame {
         this.currentSettingStep = null; // 'left', 'right', 'mid'
         this.tempNewLeft = 0; // Temporary boundary during setting
         this.tempNewRight = 0; // Temporary boundary during setting
+
+        // Get audio elements for sound effects
+        this.correctSound = document.getElementById('correctSound');
+        this.incorrectSound = document.getElementById('incorrectSound');
+        this.winSound = document.getElementById('winSound');
+        this.loseSound = document.getElementById('loseSound');
         
         // Feedback system properties
         this.feedbackTimer = null; // Timer for temporary messages
@@ -398,12 +404,14 @@ class BinarySearchGame {
             this.score = Math.max(0, this.score - 10);
             this.updateScore();
             this.showScoreAnimation(-10);
+            this.playIncorrectSound(); // Play sound for incorrect action
         } else {
             this.steps++;
             this.score += 10; // Add 10 points for correct action
             this.updateStepCount();
             this.updateScore();
             this.showScoreAnimation(10);
+            this.playCorrectSound(); // Play sound for correct action
         }
         this.renderArray();
         this.checkGameEnd();
@@ -470,12 +478,13 @@ class BinarySearchGame {
                     this.updateButtonStates();
                     
                     // Add points for setting boundaries correctly
-                    this.score += 10;
-                    this.updateScore();
-                    this.showScoreAnimation(10);
-                }
-                break;
+            this.score += 10;
+            this.updateScore();
+            this.showScoreAnimation(10);
+            this.playCorrectSound(); // Play sound for correct boundary update
         }
+        this.renderArray();
+    }
         
         if (correct && nextStep) {
             this.currentSettingStep = nextStep;
@@ -494,6 +503,7 @@ class BinarySearchGame {
         }
         
         if (this.gameState === 'won') {
+            this.playWinSound(); // Play win sound
             this.showFeedback(this.language === 'english' 
                 ? `Congratulations! Found in ${this.steps} steps! Starting new game...` 
                 : `恭喜！用了 ${this.steps} 步找到目標！即將開始新遊戲...`);
@@ -508,6 +518,7 @@ class BinarySearchGame {
         
         if (this.left > this.right) {
             this.gameState = 'lost';
+            this.playLoseSound(); // Play lose sound
             this.showFeedback(this.language === 'english' 
                 ? 'Target not found! Starting new game...' 
                 : '未找到目標！即將開始新遊戲...');
@@ -645,6 +656,30 @@ class BinarySearchGame {
     getRandomFeedback(type) {
         const messages = this.feedbackMessages[type][this.language];
         return messages[Math.floor(Math.random() * messages.length)];
+    }
+
+    playCorrectSound() {
+        if (this.correctSound) {
+            this.correctSound.play().catch(e => console.error("Error playing correct sound:", e));
+        }
+    }
+
+    playIncorrectSound() {
+        if (this.incorrectSound) {
+            this.incorrectSound.play().catch(e => console.error("Error playing incorrect sound:", e));
+        }
+    }
+
+    playWinSound() {
+        if (this.winSound) {
+            this.winSound.play().catch(e => console.error("Error playing win sound:", e));
+        }
+    }
+
+    playLoseSound() {
+        if (this.loseSound) {
+            this.loseSound.play().catch(e => console.error("Error playing lose sound:", e));
+        }
     }
 }
 

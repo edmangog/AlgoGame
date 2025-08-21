@@ -13,6 +13,12 @@ class InsertionSortGame {
         this.language = 'english';
         this.sorted = false;     // Track if array is fully sorted
         this.originalKeyValue = null; // Store original key value during shifting
+
+        // Get audio elements for sound effects
+        this.correctSound = document.getElementById('correctSound');
+        this.incorrectSound = document.getElementById('incorrectSound');
+        this.winSound = document.getElementById('winSound');
+        this.loseSound = document.getElementById('loseSound');
         
         // Encouraging messages for user feedback
         this.feedbackMessages = {
@@ -212,6 +218,7 @@ class InsertionSortGame {
                 "元素已移動！"
             );
             this.showScoreAnimation(10);
+            this.playCorrectSound(); // Play sound for correct shift
         } else {
             this.score = Math.max(0, this.score - 10);
             this.showFeedbackMessage(
@@ -220,6 +227,7 @@ class InsertionSortGame {
                 "無法移動 - 元素較小！"
             );
             this.showScoreAnimation(-10);
+            this.playIncorrectSound(); // Play sound for incorrect shift
         }
         
         this.updateScoreBoard();
@@ -251,6 +259,7 @@ class InsertionSortGame {
                 "關鍵元素已插入！"
             );
             this.showScoreAnimation(10);
+            this.playCorrectSound(); // Play sound for correct insert
             
             // Move to next pass
             this.passCount++;
@@ -274,6 +283,7 @@ class InsertionSortGame {
                 "插入無效！請先移動元素"
             );
             this.showScoreAnimation(-10);
+            this.playIncorrectSound(); // Play sound for incorrect insert
             this.updateScoreBoard();
         }
     }
@@ -288,6 +298,11 @@ class InsertionSortGame {
         this.updateScoreBoard();
         
         setTimeout(() => {
+            if (isWin) {
+                this.playWinSound(); // Play win sound
+            } else {
+                this.playLoseSound(); // Play lose sound (if there's a lose condition)
+            }
             alert(this.language === 'english' 
                 ? `Game completed in ${timeTaken} seconds! Final score: ${this.score} Starting new game...` 
                 : `遊戲完成！耗時${timeTaken}秒，最終分數: ${this.score} 即將開始新遊戲...`);
@@ -334,6 +349,30 @@ class InsertionSortGame {
 
     updateScoreBoard() {
         this.app.querySelector('#score').textContent = this.score;
+    }
+
+    playCorrectSound() {
+        if (this.correctSound) {
+            this.correctSound.play().catch(e => console.error("Error playing correct sound:", e));
+        }
+    }
+
+    playIncorrectSound() {
+        if (this.incorrectSound) {
+            this.incorrectSound.play().catch(e => console.error("Error playing incorrect sound:", e));
+        }
+    }
+
+    playWinSound() {
+        if (this.winSound) {
+            this.winSound.play().catch(e => console.error("Error playing win sound:", e));
+        }
+    }
+
+    playLoseSound() {
+        if (this.loseSound) {
+            this.loseSound.play().catch(e => console.error("Error playing lose sound:", e));
+        }
     }
 }
 

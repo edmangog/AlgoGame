@@ -10,6 +10,12 @@ class BubbleSortGame {
         this.language = 'english';
         this.currentIndex = 0;
         this.currentPass = 1;
+
+        // Get audio elements for sound effects
+        this.correctSound = document.getElementById('correctSound');
+        this.incorrectSound = document.getElementById('incorrectSound');
+        this.winSound = document.getElementById('winSound');
+        this.loseSound = document.getElementById('loseSound');
         
         // Encouraging messages for all actions
         this.feedbackMessages = {
@@ -293,11 +299,13 @@ class BubbleSortGame {
             this.updateScoreBoard();
             this.showScoreAnimation(10); // Show +10 animation
             this.showFeedbackMessage(this.getRandomFeedback('correct'));
+            this.playCorrectSound(); // Play sound for correct swap
         } else {
             this.score = Math.max(0, this.score - 10); // Incorrect swap
             this.updateScoreBoard();
             this.showScoreAnimation(-10); // Show -10 animation
             this.showFeedbackMessage(this.getRandomFeedback('incorrect'));
+            this.playIncorrectSound(); // Play sound for incorrect swap
         }
         
         this.nextStep();
@@ -344,11 +352,13 @@ class BubbleSortGame {
             this.updateScoreBoard();
             this.showScoreAnimation(10); // Show +10 animation
             this.showFeedbackMessage(this.getRandomFeedback('correct'));
+            this.playCorrectSound(); // Play sound for correct skip
         } else {
             this.score = Math.max(0, this.score - 10); // Incorrect skip
             this.updateScoreBoard();
             this.showScoreAnimation(-10); // Show -10 animation
             this.showFeedbackMessage(this.getRandomFeedback('incorrect'));
+            this.playIncorrectSound(); // Play sound for incorrect skip
         }
         
         this.nextStep();
@@ -465,6 +475,7 @@ class BubbleSortGame {
             
             if (this.currentNumbers.every((val, i, arr) => !i || arr[i-1] <= val)) {
                 setTimeout(() => {
+                    this.playWinSound(); // Play win sound
                     alert(this.language === 'english' 
                         ? `Congratulations! Sorted in ${timeTaken} seconds! Starting new game...` 
                         : `恭喜！耗時${timeTaken}秒完成排序！即將開始新遊戲...`);
@@ -476,6 +487,7 @@ class BubbleSortGame {
             } else {
                 const completedPasses = this.currentNumbers.length - 1;
                 setTimeout(() => {
+                    this.playLoseSound(); // Play lose sound
                     alert(this.language === 'english' 
                         ? `Game over! The array wasn't sorted after ${completedPasses} passes. Starting new game...` 
                         : `遊戲結束！經過${completedPasses}次遍歷，數組仍未排序完成。即將開始新遊戲...`);
@@ -496,6 +508,30 @@ class BubbleSortGame {
             }
         }
         return null;
+    }
+
+    playCorrectSound() {
+        if (this.correctSound) {
+            this.correctSound.play().catch(e => console.error("Error playing correct sound:", e));
+        }
+    }
+
+    playIncorrectSound() {
+        if (this.incorrectSound) {
+            this.incorrectSound.play().catch(e => console.error("Error playing incorrect sound:", e));
+        }
+    }
+
+    playWinSound() {
+        if (this.winSound) {
+            this.winSound.play().catch(e => console.error("Error playing win sound:", e));
+        }
+    }
+
+    playLoseSound() {
+        if (this.loseSound) {
+            this.loseSound.play().catch(e => console.error("Error playing lose sound:", e));
+        }
     }
 }
 
