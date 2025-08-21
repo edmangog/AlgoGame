@@ -76,7 +76,7 @@
 
 .annotation {
     position: absolute;
-    bottom: -30px; /* Increased space below elements */
+    bottom: -25px; /* Adjusted space below elements for better alignment */
     font-size: 0.9rem;
     font-weight: bold;
     color: var(--text-dark);
@@ -220,4 +220,173 @@
     .big-score {
         font-size: 24px; /* Slightly smaller on mobile */
     }
+}
+
+/* Tutorial Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px; /* Reduced padding for more vertical space */
+    border: 1px solid #888;
+    width: 80%; /* Could be more responsive */
+    max-width: 700px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    text-align: center;
+    color: #333;
+}
+
+.modal-content h2 {
+    color: var(--primary);
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.modal-content h3 {
+    color: var(--secondary);
+    margin-top: 25px;
+    margin-bottom: 10px;
+    font-size: 1.5em;
+}
+
+.modal-content p, .modal-content ol {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-align: left;
+    padding: 0 20px;
+}
+
+.modal-content ol {
+    list-style-position: inside;
+    padding-left: 0;
+}
+
+.modal-content li {
+    margin-bottom: 8px;
+}
+
+.modal-content button {
+    background-color: var(--primary);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.modal-content button:hover {
+    background-color: var(--primary-dark);
+    color: var(--text-light); /* Ensure text remains visible on hover */
+}
+
+#skip-tutorial-button {
+    background-color: #6c757d; /* Grey for skip button */
+}
+
+#skip-tutorial-button:hover {
+    background-color: #5a6268;
+}
+
+/* Tutorial Animation Styles */
+.animation-array-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px; /* Further reduced margin */
+    margin-bottom: 70px; /* Further reduced space for pointers */
+    position: relative;
+    width: 100%;
+    padding-bottom: 20px; /* Reduced space for pointers */
+}
+
+.animation-array {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0; /* Removed gap between array and pointers */
+}
+
+.animation-number-box {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--secondary);
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    margin: 0 5px;
+    border-radius: 5px;
+    transition: all 0.5s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.eliminated-animation {
+    opacity: 0.3;
+    background-color: #ccc;
+}
+
+.target-animation {
+    box-shadow: 0 0 0 3px var(--accent-yellow), 0 0 10px var(--accent-yellow);
+    animation: pulse-animation 1.5s infinite;
+}
+
+@keyframes pulse-animation {
+    0% { box-shadow: 0 0 0 3px rgba(255, 209, 102, 0.7); }
+    50% { box-shadow: 0 0 0 8px rgba(255, 209, 102, 0.4); }
+    100% { box-shadow: 0 0 0 3px rgba(255, 209, 102, 0.7); }
+}
+
+.animation-pointers {
+    position: absolute;
+    bottom: -5px; /* Adjusted to minimize gap, potentially slight overlap */
+    display: flex;
+    width: 100%;
+    justify-content: center; /* Center the pointers container */
+}
+
+.pointer {
+    position: absolute;
+    background-color: var(--primary);
+    color: white;
+    padding: 2px 5px; /* Reduced padding for smaller size */
+    border-radius: 3px;
+    font-size: 0.7rem; /* Slightly smaller font */
+    font-weight: bold;
+    white-space: nowrap;
+    transform: translateX(-50%); /* Center pointer text */
+    transition: left 0.5s ease;
+    z-index: 5;
+    display: none; /* Hidden by default, shown by JS */
+}
+
+.pointer.left-pointer {
+    background-color: #3498db; /* Blue for Left */
+}
+
+.pointer.mid-pointer {
+    background-color: #e74c3c; /* Red for Mid */
+}
+
+.pointer.right-pointer {
+    background-color: #2ecc71; /* Green for Right */
 }

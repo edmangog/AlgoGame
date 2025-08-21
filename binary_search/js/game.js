@@ -10,12 +10,13 @@ class BinarySearchGame {
         this.mid = 0;
         this.steps = 0;
         this.score = 0; // Added scoring system
-        this.gameState = 'initial'; // initial, playing, won, lost
+        this.gameState = 'initial'; // initial, playing, won, lost, tutorial
         this.language = 'english';
         this.settingMode = false; // Tracks if in boundary setting mode
         this.currentSettingStep = null; // 'left', 'right', 'mid'
         this.tempNewLeft = 0; // Temporary boundary during setting
         this.tempNewRight = 0; // Temporary boundary during setting
+        this.hasVisited = localStorage.getItem('binarySearchVisited') === 'true';
 
         // Get audio elements for sound effects
         this.correctSound = document.getElementById('correctSound');
@@ -71,7 +72,7 @@ class BinarySearchGame {
         this.setupDOM();
         this.setupEventListeners();
         setupLanguageToggle();
-        this.newGame();
+        this.showTutorialIfFirstTime(); // Show tutorial or start game
     }
 
     setupDOM() {
@@ -134,18 +135,6 @@ class BinarySearchGame {
                         ${this.createActionButtons()}
                         <div id="feedbackMessage" class="feedback-message"></div>
                     </div>
-                    
-                    <div class="tutorial">
-                        <h3 class="english">How to Play</h3>
-                        <h3 class="chinese" style="display:none;">玩法說明</h3>
-        <p class="english">1. The target is highlighted with a gold border<br>
-        2. Choose whether to eliminate left/right of mid or confirm found<br>
-        3. Update boundaries by clicking on array elements</p>
-        <p class="chinese" style="display:none;">
-        1. 目標元素有金色邊框<br>
-        2. 選擇消除中間元素的左側、右側或確認找到目標<br>
-        3. 點擊陣列元素更新邊界</p>
-                    </div>
                 </div>
             </div>
         `;
@@ -175,9 +164,15 @@ class BinarySearchGame {
         this.app.querySelector('#elimLeftBtn').addEventListener('click', () => this.handleAction('elimLeft'));
         this.app.querySelector('#elimRightBtn').addEventListener('click', () => this.handleAction('elimRight'));
         this.app.querySelector('#foundBtn').addEventListener('click', () => this.handleAction('found'));
+
+        // Tutorial button event listeners
+        document.getElementById('start-game-button').addEventListener('click', () => this.dismissTutorial());
+        document.getElementById('skip-tutorial-button').addEventListener('click', () => this.dismissTutorial());
     }
 
     newGame() {
+        // Removed the check that prevented game from starting after tutorial
+
         // Clear existing timer
         clearInterval(this.timerInterval);
         
@@ -504,7 +499,7 @@ class BinarySearchGame {
         
         if (this.gameState === 'won') {
             this.playWinSound(); // Play win sound
-            this.showFeedback(this.language === 'english' 
+            alert(this.language === 'english' 
                 ? `Congratulations! Found in ${this.steps} steps! Starting new game...` 
                 : `恭喜！用了 ${this.steps} 步找到目標！即將開始新遊戲...`);
             this.disableAllButtons();
@@ -512,14 +507,14 @@ class BinarySearchGame {
             // Start a new game after showing the message
             setTimeout(() => {
                 this.newGame();
-            }, 600);
+            }, 1500);
             return;
         }
         
         if (this.left > this.right) {
             this.gameState = 'lost';
             this.playLoseSound(); // Play lose sound
-            this.showFeedback(this.language === 'english' 
+            alert(this.language === 'english' 
                 ? 'Target not found! Starting new game...' 
                 : '未找到目標！即將開始新遊戲...');
             this.disableAllButtons();
@@ -527,7 +522,7 @@ class BinarySearchGame {
             // Start a new game after showing the message
             setTimeout(() => {
                 this.newGame();
-            }, 600);
+            }, 1500);
         }
     }
 
@@ -680,6 +675,27 @@ class BinarySearchGame {
         if (this.loseSound) {
             this.loseSound.play().catch(e => console.error("Error playing lose sound:", e));
         }
+    }
+
+    showTutorialIfFirstTime() {
+        const tutorialModal = document.getElementById('tutorial-modal');
+        if (!this.hasVisited) {
+            tutorialModal.style.display = 'flex'; // Show the modal
+            this.gameState = 'tutorial'; // Set game state to tutorial
+            this.disableAllButtons(); // Disable game buttons during tutorial
+        } else {
+            tutorialModal.style.display = 'none'; // Hide the modal
+            this.newGame(); // Start the game if already visited
+        }
+    }
+
+    dismissTutorial() {
+        const tutorialModal = document.getElementById('tutorial-modal');
+        tutorialModal.style.display = 'none'; // Hide the modal
+        localStorage.setItem('binarySearchVisited', 'true'); // Mark as visited
+        this.hasVisited = true;
+        this.gameState = 'playing'; // Set game state to playing before starting new game
+        this.newGame(); // Start the game
     }
 }
 
