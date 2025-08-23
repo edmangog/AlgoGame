@@ -7,6 +7,11 @@
 }
 
 .number-box {
+    will-change: transform, border-color; /* Optimize for animations */
+    transform: translateZ(0); /* Force hardware acceleration */
+}
+
+.number-box {
     width: 60px;
     height: 60px;
     background: var(--secondary);

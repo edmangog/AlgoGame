@@ -128,6 +128,18 @@ class InsertionSortGame {
         this.app.querySelector('.new-game').addEventListener('click', () => this.newGame());
         this.app.querySelector('.shift-btn').addEventListener('click', () => this.shiftElement());
         this.app.querySelector('.insert-btn').addEventListener('click', () => this.insertKey());
+        
+        // Add touch event listeners for swipe gestures
+        const numberLine = this.app.querySelector('#numberLine');
+        numberLine.addEventListener('touchstart', this.handleTouchStart.bind(this), false);
+        numberLine.addEventListener('touchmove', this.handleTouchMove.bind(this), false);
+        numberLine.addEventListener('touchend', this.handleTouchEnd.bind(this), false);
+        
+        // Initialize touch tracking variables
+        this.touchStartX = 0;
+        this.touchStartY = 0;
+        this.touchEndX = 0;
+        this.touchEndY = 0;
     }
 
     newGame() {
@@ -349,6 +361,49 @@ class InsertionSortGame {
 
     updateScoreBoard() {
         this.app.querySelector('#score').textContent = this.score;
+    }
+    
+    // Touch event handlers for swipe gestures
+    handleTouchStart(event) {
+        this.touchStartX = event.touches[0].clientX;
+        this.touchStartY = event.touches[0].clientY;
+    }
+    
+    handleTouchMove(event) {
+        if (!this.touchStartX || !this.touchStartY) return;
+        
+        this.touchEndX = event.touches[0].clientX;
+        this.touchEndY = event.touches[0].clientY;
+        
+        // Prevent scrolling if we're detecting a horizontal swipe
+        const diffX = Math.abs(this.touchEndX - this.touchStartX);
+        const diffY = Math.abs(this.touchEndY - this.touchStartY);
+        
+        if (diffX > diffY) {
+            event.preventDefault();
+        }
+    }
+    
+    handleTouchEnd() {
+        if (!this.touchStartX || !this.touchStartY || !this.touchEndX || !this.touchEndY) return;
+        
+        const diffX = this.touchEndX - this.touchStartX;
+        const diffY = this.touchEndY - this.touchStartY;
+        
+        // Only consider horizontal swipes with minimal vertical movement
+        if (Math.abs(diffX) > 50 && Math.abs(diffY) < 50) {
+            if (diffX > 0) {
+                this.shiftElement(); // Swipe right to shift
+            } else {
+                this.insertKey(); // Swipe left to insert
+            }
+        }
+        
+        // Reset touch points
+        this.touchStartX = 0;
+        this.touchStartY = 0;
+        this.touchEndX = 0;
+        this.touchEndY = 0;
     }
 
     playCorrectSound() {
