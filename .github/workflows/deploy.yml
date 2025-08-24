@@ -15,9 +15,6 @@ jobs:
 
       - name: Replace Firebase Config
         run: |
-          # Navigate to the AlgoGame directory
-          cd AlgoGame
-
           # Replace placeholders with secrets
           sed -i "s|VITE_FIREBASE_API_KEY|${{ secrets.FIREBASE_API_KEY }}|g" shared/js/firebase-config.js
           sed -i "s|VITE_FIREBASE_AUTH_DOMAIN|${{ secrets.FIREBASE_AUTH_DOMAIN }}|g" shared/js/firebase-config.js
@@ -31,6 +28,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./AlgoGame # Ensure this points to your project's root directory for deployment
+          publish_dir: . # Deploy the entire repository content
           # If your GitHub Pages is configured to serve from a specific branch (e.g., gh-pages), specify it here:
           # publish_branch: gh-pages
