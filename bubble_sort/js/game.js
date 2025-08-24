@@ -14,8 +14,7 @@ class BubbleSortGame {
         // Get audio elements for sound effects
         this.correctSound = document.getElementById('correctSound');
         this.incorrectSound = document.getElementById('incorrectSound');
-        this.winSound = document.getElementById('winSound');
-        this.loseSound = document.getElementById('loseSound');
+        // Removed winSound and loseSound as they are not present in index.html
         
         // Encouraging messages for all actions
         this.feedbackMessages = {
@@ -72,32 +71,15 @@ class BubbleSortGame {
         this.setupDOM();
         this.setupEventListeners();
         setupLanguageToggle(); // Initialize after DOM is ready
-        this.newGame();
+        this.showTutorialOrStartGame();
     }
 
     setupDOM() {
         this.app = document.getElementById('app');
+        // The tutorial modal is now directly in index.html, so we don't need to create it here.
+        // We only need to render the main game content.
         this.app.innerHTML = `
             <div class="container">
-                <div id="firstTimeModal" class="modal">
-                    <div class="modal-content">
-                        <h2 class="english">Welcome to Bubble Sort Game!</h2>
-                        <h2 class="chinese" style="display:none;">欢迎来到冒泡排序游戏！</h2>
-                        <div class="tutorial-content english">
-                            <p>Your goal is to sort numbers in ascending order using the bubble sort algorithm.</p>
-                            <p>Click SWAP when left number > right number, otherwise click SKIP.</p>
-                            <p>Earn 10 points for each correct action, lose 10 points for each incorrect action.</p>
-                        </div>
-                        <div class="tutorial-content chinese" style="display:none;">
-                            <p>您的目标是使用冒泡排序算法将数字按升序排列。</p>
-                            <p>当左边数字大于右边时点击"交换"，否则点击"跳过"。</p>
-                            <p>正确操作得10分，错误操作扣10分！</p>
-                        </div>
-                        <button id="startGame" class="english">Start Game</button>
-                        <button id="startGame" class="chinese" style="display:none;">开始游戏</button>
-                    </div>
-                </div>
-                
                 <div class="header-container">
                     <div>
                         <h1>
@@ -128,7 +110,6 @@ class BubbleSortGame {
                     ${this.createScoreBoard()}
                     <div class="number-line" id="numberLine"></div>
                     ${this.createControls()}
-                    ${this.createTutorial()}
                 </div>
             </div>
         `;
@@ -177,34 +158,7 @@ class BubbleSortGame {
         `;
     }
 
-
-    createTutorial() {
-        return `
-            <div class="tutorial">
-                <h3 class="english">How to Play</h3>
-                <h3 class="chinese" style="display:none;">玩法說明</h3>
-                <p class="english">Click SWAP when the left number is greater than the right number, otherwise click SKIP. Earn 10 points for each correct action, lose 10 points for each incorrect action.</p>
-                <p class="chinese" style="display:none;">當左邊數字大於右邊數字時點擊「交換」，否則點擊「跳過」。正確操作得10分，錯誤操作扣10分！</p>
-                
-                <div class="algorithm-explanation">
-                    <h4 class="english">Bubble Sort Algorithm</h4>
-                    <h4 class="chinese" style="display:none;">冒泡排序算法</h4>
-                    <ol class="english">
-                        <li>Start from the first element</li>
-                        <li>Compare adjacent elements</li>
-                        <li>Swap if they're in wrong order</li>
-                        <li>Repeat until no more swaps needed</li>
-                    </ol>
-                    <ol class="chinese" style="display:none;">
-                        <li>從第一個元素開始</li>
-                        <li>比較相鄰元素</li>
-                        <li>如果順序錯誤則交換</li>
-                        <li>重複直到不需要交換</li>
-                    </ol>
-                </div>
-            </div>
-        `;
-    }
+    // Removed createTutorial as it's now in index.html
 
     setupEventListeners() {
         this.app.querySelector('.new-game').addEventListener('click', () => this.newGame());
@@ -224,52 +178,32 @@ class BubbleSortGame {
         this.touchEndX = 0;
         this.touchEndY = 0;
         
-        // First-time modal
-        const firstTimeModal = document.getElementById('firstTimeModal');
-        const tutorialSeen = localStorage.getItem('bubbleSortTutorialSeen');
-        
-        if (!tutorialSeen) {
-            firstTimeModal.style.display = 'block';
-        }
-        
-        document.getElementById('startGame').addEventListener('click', () => {
-            firstTimeModal.style.display = 'none';
+        // Tutorial modal buttons
+        document.getElementById('start-game-button').addEventListener('click', () => {
+            document.getElementById('tutorial-modal').style.display = 'none';
+            localStorage.setItem('bubbleSortTutorialSeen', 'true');
+            this.newGame();
+        });
+
+        document.getElementById('skip-tutorial-button').addEventListener('click', () => {
+            document.getElementById('tutorial-modal').style.display = 'none';
             localStorage.setItem('bubbleSortTutorialSeen', 'true');
             this.newGame();
         });
     }
-    
-    newGame() {
-        clearInterval(this.timerInterval);
-        this.swapCount = 0;
-        this.score = 0;
-        this.startTime = Date.now();
-        this.currentIndex = 0;
-        this.currentPass = 1;
-        this.updateScoreBoard();
-        this.generateNumbers();
-        this.startTimer();
-        this.highlightCurrentPair();
+
+    showTutorialOrStartGame() {
+        const tutorialModal = document.getElementById('tutorial-modal');
+        const tutorialSeen = localStorage.getItem('bubbleSortTutorialSeen');
+
+        if (!tutorialSeen) {
+            tutorialModal.style.display = 'flex'; // Show the tutorial modal
+        } else {
+            tutorialModal.style.display = 'none'; // Hide it if already seen
+            this.newGame(); // Start the game directly
+        }
     }
     
-    generateNumbers() {
-        const difficulty = this.app.querySelector('#difficulty').value;
-        let size = 6;
-        if (difficulty === 'medium') size = 8;
-        if (difficulty === 'hard') size = 10;
-        
-        this.currentNumbers = Array.from({length: size}, () => Math.floor(Math.random() * 50) + 1);
-        const numberLine = this.app.querySelector('#numberLine');
-        numberLine.innerHTML = '';
-        this.currentNumbers.forEach((num, i) => {
-            const numBox = createElement('div', 'number-box', num);
-            numBox.dataset.index = i;
-            numberLine.appendChild(numBox);
-        });
-    }
-    
-
-
     newGame() {
         clearInterval(this.timerInterval);
         this.swapCount = 0;
@@ -284,7 +218,7 @@ class BubbleSortGame {
     }
 
     generateNumbers() {
-        const difficulty = this.app.querySelector('#difficulty').value;
+        const difficulty = document.getElementById('difficulty').value;
         let size = 6;
         if (difficulty === 'medium') size = 8;
         if (difficulty === 'hard') size = 10;
@@ -531,7 +465,7 @@ class BubbleSortGame {
             
             if (this.currentNumbers.every((val, i, arr) => !i || arr[i-1] <= val)) {
                 setTimeout(() => {
-                    this.playWinSound(); // Play win sound
+                    // Removed playWinSound()
                     alert(this.language === 'english' 
                         ? `Congratulations! Sorted in ${timeTaken} seconds! Starting new game...` 
                         : `恭喜！耗時${timeTaken}秒完成排序！即將開始新遊戲...`);
@@ -543,7 +477,7 @@ class BubbleSortGame {
             } else {
                 const completedPasses = this.currentNumbers.length - 1;
                 setTimeout(() => {
-                    this.playLoseSound(); // Play lose sound
+                    // Removed playLoseSound()
                     alert(this.language === 'english' 
                         ? `Game over! The array wasn't sorted after ${completedPasses} passes. Starting new game...` 
                         : `遊戲結束！經過${completedPasses}次遍歷，數組仍未排序完成。即將開始新遊戲...`);
@@ -578,17 +512,6 @@ class BubbleSortGame {
         }
     }
 
-    playWinSound() {
-        if (this.winSound) {
-            this.winSound.play().catch(e => console.error("Error playing win sound:", e));
-        }
-    }
-
-    playLoseSound() {
-        if (this.loseSound) {
-            this.loseSound.play().catch(e => console.error("Error playing lose sound:", e));
-        }
-    }
 }
 
 // Initialize the game when DOM is loaded

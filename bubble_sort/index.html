@@ -9,15 +9,88 @@
     <link rel="stylesheet" href="./css/game.css">
 </head>
 <body>
+    <div id="tutorial-modal" class="modal">
+        <div class="modal-content">
+            <h2>
+                <span class="english">Welcome to Bubble Sort Game!</span>
+                <span class="chinese" style="display:none;">歡迎來到冒泡排序遊戲！</span>
+            </h2>
+            <p>
+                <span class="english">This game helps you understand the Bubble Sort algorithm.</span>
+                <span class="chinese" style="display:none;">這個遊戲幫助您理解冒泡排序演算法。</span>
+            </p>
+            <div id="tutorial-animation-container" style="margin-top: 20px; margin-bottom: 20px;"></div>
+            <div id="tutorial-pass-display" style="text-align: center; font-weight: bold; margin-bottom: 10px;">
+                <span class="english">Pass: </span>
+                <span class="chinese" style="display:none;">遍歷: </span>
+                <span id="current-tutorial-pass">0</span>
+            </div>
+            <div class="tutorial-buttons">
+                <button id="tutorial-swap" class="tutorial-action-button">🔄 <span class="english">Swap</span><span class="chinese" style="display:none;">交換</span></button>
+                <button id="tutorial-no-swap" class="tutorial-action-button">✅ <span class="english">No Swap</span><span class="chinese" style="display:none;">不交換</span></button>
+                <button id="tutorial-replay-button" class="tutorial-action-button" style="display:none;">▶️ <span class="english">Replay Animation</span><span class="chinese" style="display:none;">重播動畫</span></button>
+            </div>
+            <div class="game-rules">
+                <h3>
+                    <span class="english">How to Play:</span>
+                    <span class="chinese" style="display:none;">如何遊玩：</span>
+                </h3>
+                <ol>
+            <li>
+                <span class="english">You will be presented with an array of numbers. Your goal is to sort them in ascending order using the Bubble Sort algorithm.</span>
+                <span class="chinese" style="display:none;">您將看到一個數字陣列。您的目標是使用冒泡排序演算法將它們按升序排列。</span>
+            </li>
+                    <li>
+                        <span class="english">The game will highlight two adjacent elements for you to compare.</span>
+                        <span class="chinese" style="display:none;">遊戲將突出顯示兩個相鄰元素供您比較。</span>
+                    </li>
+                    <li>
+                        <span class="english">Decide if these two elements need to be swapped to achieve ascending order. Click "Swap" if they do, or "No Swap" if they don't.</span>
+                        <span class="chinese" style="display:none;">判斷這兩個元素是否需要交換以實現升序。如果需要，點擊「交換」，如果不需要，點擊「不交換」。</span>
+                    </li>
+                    <li>
+                        <span class="english">Continue this process until the entire array is sorted.</span>
+                        <span class="chinese" style="display:none;">繼續這個過程，直到整個陣列排序完成。</span>
+                    </li>
+                </ol>
+            </div>
+            <button id="start-game-button">
+                <span class="english">Let's Play!</span>
+                <span class="chinese" style="display:none;">開始遊戲！</span>
+            </button>
+            <button id="skip-tutorial-button">
+                <span class="english">Skip Tutorial</span>
+                <span class="chinese" style="display:none;">跳過教學</span>
+            </button>
+        </div>
+    </div>
     <div id="app"></div>
+    <div id="game-description" class="game-description">
+        <h3><span class="english">Gameplay Description:</span><span class="chinese" style="display:none;">遊戲玩法說明：</span></h3>
+        <ul>
+            <li>
+                <span class="english">In Bubble Sort, you repeatedly step through the list, compare adjacent elements and swap them if they are in the wrong order.</span>
+                <span class="chinese" style="display:none;">在冒泡排序中，您重複遍歷列表，比較相鄰元素，如果它們的順序不正確則交換它們。</span>
+            </li>
+            <li>
+                <span class="english">The pass continues until no swaps are needed, indicating that the list is sorted.</span>
+                <span class="chinese" style="display:none;">遍歷會一直持續到不需要交換為止，這表示列表已排序。</span>
+            </li>
+            <li>
+                <span class="english">Your score increases for correct actions and decreases for incorrect ones.</span>
+                <span class="chinese" style="display:none;">您的分數會因正確操作而增加，因不正確操作而減少。</span>
+            </li>
+        </ul>
+    </div>
     <a href="../index.html" class="home-button">🏠 Go Back Home</a>
     <button class="lang-toggle">中/Eng</button>
+    <script type="module" src="../shared/js/utils.js"></script>
+    <script type="module" src="../shared/js/lang-toggle.js"></script>
     <script type="module" src="js/game.js"></script>
+    <script type="module" src="js/tutorial-animation.js"></script>
 
     <!-- Sound Effects -->
     <audio id="correctSound" src="../shared/assets/correct.mp3" preload="auto"></audio>
     <audio id="incorrectSound" src="../shared/assets/incorrect.mp3" preload="auto"></audio>
-    <audio id="winSound" src="../shared/assets/win.mp3" preload="auto"></audio>
-    <audio id="loseSound" src="../shared/assets/lose.mp3" preload="auto"></audio>
 </body>
 </html>
