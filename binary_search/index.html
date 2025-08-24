@@ -20,6 +20,11 @@
                 <span class="chinese" style="display:none;">這個遊戲幫助您理解二分搜尋演算法。</span>
             </p>
             <div id="tutorial-animation-container" style="margin-top: 20px; margin-bottom: 20px;"></div>
+            <div class="tutorial-buttons" style="text-align: center; margin-top: 10px;">
+                <button id="tutorial-go-left" class="tutorial-action-button">⬅️ <span class="english">Go Left</span><span class="chinese" style="display:none;">向左</span></button>
+                <button id="tutorial-found" class="tutorial-action-button">🔍 <span class="english">Found</span><span class="chinese" style="display:none;">找到</span></button>
+                <button id="tutorial-go-right" class="tutorial-action-button">➡️ <span class="english">Go Right</span><span class="chinese" style="display:none;">向右</span></button>
+            </div>
             <div class="game-rules">
                 <h3>
                     <span class="english">How to Play:</span>
@@ -31,20 +36,16 @@
                         <span class="chinese" style="display:none;">陣列中會突出顯示一個目標數字。<br> <strong>請注意，遊戲中的陣列從索引 0 開始！</strong></span>
                     </li>
                     <li>
-                        <span class="english">Your goal is to find this target number by eliminating half of the search space in each step.</span>
-                        <span class="chinese" style="display:none;">您的目標是透過每一步消除一半的搜尋空間來找到這個目標數字。</span>
+                        <span class="english">Your goal is to find this target number by eliminating half of the search space in each step to narrow down the search until you find the target!</span>
+                        <span class="chinese" style="display:none;">您的目標是透過消除一半的搜尋空間以縮小搜尋範圍，直到找到目標數字！。</span>
                     </li>
                     <li>
-                        <span class="english">The game will show you the 'left', 'right', and 'middle' elements.</span>
-                        <span class="chinese" style="display:none;">遊戲將顯示「左」、「右」和「中間」元素。</span>
+                        <span class="english">The game will show you the current 'left', 'right', and 'middle' elements.</span>
+                        <span class="chinese" style="display:none;">遊戲將顯示當前「左」、「右」和「中間」元素。</span>
                     </li>
                     <li>
                         <span class="english">Choose to eliminate the left half, the right half, or confirm if the middle element is the target.</span>
                         <span class="chinese" style="display:none;">選擇消除左半部分、右半部分，或確認中間元素是否為目標。</span>
-                    </li>
-                    <li>
-                        <span class="english">Make correct choices to narrow down the search until you find the target!</span>
-                        <span class="chinese" style="display:none;">做出正確的選擇，縮小搜尋範圍，直到找到目標！</span>
                     </li>
                 </ol>
             </div>

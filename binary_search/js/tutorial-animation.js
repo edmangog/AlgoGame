@@ -19,6 +19,10 @@ export function setupTutorialAnimation() {
     const midPointer = container.querySelector('.mid-pointer');
     const rightPointer = container.querySelector('.right-pointer');
 
+    const tutorialGoLeftBtn = document.getElementById('tutorial-go-left');
+    const tutorialFoundBtn = document.getElementById('tutorial-found');
+    const tutorialGoRightBtn = document.getElementById('tutorial-go-right');
+
     const array = [5, 12, 23, 30, 45, 58, 67]; // Reduced to 7 elements
     const target = 45; // Example target
 
@@ -67,6 +71,7 @@ export function setupTutorialAnimation() {
     let currentLeft = 0;
     let currentRight = array.length - 1;
     let animationSteps = [];
+    let buttonClicks = []; // To store which button was clicked
 
     // Simulate binary search steps for animation
     while (currentLeft <= currentRight) {
@@ -74,19 +79,39 @@ export function setupTutorialAnimation() {
         animationSteps.push({ left: currentLeft, right: currentRight, mid: mid });
 
         if (array[mid] === target) {
+            buttonClicks.push('found');
             break; // Target found
         } else if (array[mid] < target) {
+            buttonClicks.push('go-right');
             currentLeft = mid + 1;
         } else {
+            buttonClicks.push('go-left');
             currentRight = mid - 1;
         }
     }
 
     let stepIndex = 0;
     function animateStep() {
+        // Reset button styles
+        [tutorialGoLeftBtn, tutorialFoundBtn, tutorialGoRightBtn].forEach(btn => {
+            if (btn) btn.classList.remove('clicked');
+        });
+
         if (stepIndex < animationSteps.length) {
             const step = animationSteps[stepIndex];
+            const clickedButton = buttonClicks[stepIndex];
+
             renderArray(array, step.left, step.right, step.mid, target);
+
+            // Highlight the clicked button
+            if (clickedButton === 'go-left' && tutorialGoLeftBtn) {
+                tutorialGoLeftBtn.classList.add('clicked');
+            } else if (clickedButton === 'found' && tutorialFoundBtn) {
+                tutorialFoundBtn.classList.add('clicked');
+            } else if (clickedButton === 'go-right' && tutorialGoRightBtn) {
+                tutorialGoRightBtn.classList.add('clicked');
+            }
+
             stepIndex++;
             setTimeout(animateStep, 1500); // Adjust speed as needed
         } else {

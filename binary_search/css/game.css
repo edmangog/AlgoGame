@@ -224,7 +224,7 @@
 
 /* Tutorial Modal Styles */
 .modal {
-    display: none; /* Hidden by default */
+    display: flex; /* Changed to flex to make it visible by default for tutorial */
     position: fixed; /* Stay in place */
     z-index: 1000; /* Sit on top */
     left: 0;
@@ -286,7 +286,6 @@
     color: white;
     padding: 12px 25px;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
     font-size: 1.1em;
     margin: 10px;
@@ -312,7 +311,7 @@
     flex-direction: column;
     align-items: center;
     margin-top: 10px; /* Further reduced margin */
-    margin-bottom: 70px; /* Further reduced space for pointers */
+    margin-bottom: 50px; /* Further reduced space for pointers */
     position: relative;
     width: 100%;
     padding-bottom: 20px; /* Reduced space for pointers */
@@ -377,6 +376,35 @@
     transition: left 0.5s ease;
     z-index: 5;
     display: none; /* Hidden by default, shown by JS */
+}
+
+.tutorial-action-button {
+    background-color: var(--primary);
+    color: var(--text-light);
+    padding: 12px 25px; /* Increased padding for a larger button */
+    border: none;
+    border-radius: 30px; /* Highly rounded corners */
+    cursor: pointer;
+    font-size: 1.1em; /* Slightly larger font */
+    margin: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px var(--shadow-medium); /* Add shadow */
+    display: inline-flex; /* Align icon and text */
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Space between icon and text */
+}
+
+.tutorial-action-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px); /* Slight lift effect on hover */
+    box-shadow: 0 6px 12px var(--shadow-medium); /* Enhanced shadow on hover */
+}
+
+.tutorial-action-button.clicked {
+    background-color: var(--accent-yellow); /* Highlight color when clicked */
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255, 209, 102, 0.7);
 }
 
 .pointer.left-pointer {
