@@ -120,12 +120,12 @@ class BubbleSortGame {
             <div class="controls">
                 <div class="core-buttons-container">
                     <div class="core-buttons">
-                        <button class="swap-btn">
-                            <span class="english">Swap</span>
+                        <button class="swap-btn game-action-button">
+                            🔄 <span class="english">Swap</span>
                             <span class="chinese" style="display:none;">交換</span>
                         </button>
-                        <button class="skip-btn">
-                            <span class="english">Skip</span>
+                        <button class="skip-btn game-action-button">
+                            ✅ <span class="english">Skip</span>
                             <span class="chinese" style="display:none;">跳過</span>
                         </button>
                     </div>
@@ -241,21 +241,22 @@ class BubbleSortGame {
         const shouldSwap = this.currentNumbers[i] > this.currentNumbers[j];
         
         if (shouldSwap) {
-            this.swapNumbers(i, j);
-            this.score += 10; // Correct swap
-            this.updateScoreBoard();
-            this.showScoreAnimation(10); // Show +10 animation
-            this.showFeedbackMessage(this.getRandomFeedback('correct'));
-            this.playCorrectSound(); // Play sound for correct swap
+            this.swapNumbers(i, j, () => { // Pass nextStep as a callback
+                this.score += 10; // Correct swap
+                this.updateScoreBoard();
+                this.showScoreAnimation(10); // Show +10 animation
+                this.showFeedbackMessage(this.getRandomFeedback('correct'));
+                this.playCorrectSound(); // Play sound for correct swap
+                this.nextStep();
+            });
         } else {
             this.score = Math.max(0, this.score - 10); // Incorrect swap
             this.updateScoreBoard();
             this.showScoreAnimation(-10); // Show -10 animation
             this.showFeedbackMessage(this.getRandomFeedback('incorrect'));
             this.playIncorrectSound(); // Play sound for incorrect swap
+            this.nextStep(); // Call nextStep immediately if no swap animation
         }
-        
-        this.nextStep();
     }
     
     showScoreAnimation(pointsChange) {
@@ -308,7 +309,7 @@ class BubbleSortGame {
             this.playIncorrectSound(); // Play sound for incorrect skip
         }
         
-        this.nextStep();
+        this.nextStep(); // Always call nextStep immediately for skip
     }
     
     nextStep() {
@@ -334,52 +335,73 @@ class BubbleSortGame {
         this.resetSelection();
         
         const items = this.app.querySelectorAll('.number-box');
-        items.forEach(item => item.classList.remove('active'));
+        items.forEach(item => item.classList.remove('comparing-element'));
         
         if (this.currentIndex < this.currentNumbers.length - 1) {
-            items[this.currentIndex].classList.add('active');
-            items[this.currentIndex + 1].classList.add('active');
+            items[this.currentIndex].classList.add('comparing-element');
+            items[this.currentIndex + 1].classList.add('comparing-element');
         }
     }
 
-    swapNumbers(i, j) {
-        [this.currentNumbers[i], this.currentNumbers[j]] = [this.currentNumbers[j], this.currentNumbers[i]];
+    swapNumbers(i, j, callback) {
         const items = this.app.querySelectorAll('.number-box');
-        
-        // Visual feedback before swap
-        items[i].classList.add('swapping-from');
-        items[j].classList.add('swapping-to');
-        
+        const itemI = items[i];
+        const itemJ = items[j];
+
+        // Update the internal array first
+        [this.currentNumbers[i], this.currentNumbers[j]] = [this.currentNumbers[j], this.currentNumbers[i]];
+
+        // Add a class to indicate they are about to swap and apply initial transform
+        itemI.classList.add('swapping');
+        itemJ.classList.add('swapping');
+
+        // Calculate the distance to move
+        const distance = itemJ.offsetLeft - itemI.offsetLeft;
+
+        // Apply transform to move them
+        itemI.style.transform = `translateX(${distance}px)`;
+        itemJ.style.transform = `translateX(${-distance}px)`;
+
+        // After the animation, reset transforms and physically swap elements
         setTimeout(() => {
-            // Swap animation
-            items[i].classList.remove('swapping-from');
-            items[j].classList.remove('swapping-to');
-            items[i].classList.add('swapping');
-            items[j].classList.add('swapping');
-            
-            setTimeout(() => {
-                // Update DOM elements
-                [items[i].textContent, items[j].textContent] = [items[j].textContent, items[i].textContent];
-                items[i].dataset.index = j;
-                items[j].dataset.index = i;
-                
-                // Cleanup animations
+            itemI.style.transform = ''; // Reset transform
+            itemJ.style.transform = ''; // Reset transform
+
+            // Physically swap the elements in the DOM
+            const parent = itemI.parentNode;
+            // Ensure correct insertion order
+            if (i < j) {
+                parent.insertBefore(itemJ, itemI);
+                parent.insertBefore(itemI, itemJ.nextSibling);
+            } else {
+                // This case shouldn't happen in bubble sort, but for completeness
+                parent.insertBefore(itemI, itemJ);
+                parent.insertBefore(itemJ, itemI.nextSibling);
+            }
+
+            // Update dataset indices to reflect new positions
+            itemI.dataset.index = j;
+            itemJ.dataset.index = i;
+
+            // Remove swapping class
+            itemI.classList.remove('swapping');
+            itemJ.classList.remove('swapping');
+
+            // Check if swap was optimal
+            if (this.isOptimalSwap(i, j)) {
+                itemI.classList.add('optimal');
+                itemJ.classList.add('optimal');
                 setTimeout(() => {
-                    items[i].classList.remove('swapping');
-                    items[j].classList.remove('swapping');
-                    
-                    // Check if swap was optimal
-                    if (this.isOptimalSwap(i, j)) {
-                        items[i].classList.add('optimal');
-                        items[j].classList.add('optimal');
-                        setTimeout(() => {
-                            items[i].classList.remove('optimal');
-                            items[j].classList.remove('optimal');
-                        }, 1000);
-                    }
-                }, 400);
-            }, 400);
-        }, 100);
+                    itemI.classList.remove('optimal');
+                    itemJ.classList.remove('optimal');
+                }, 1000);
+            }
+            
+            // Execute callback after animation and DOM update
+            if (callback) {
+                callback();
+            }
+        }, 400); // This timeout should match the CSS transition duration for .swapping
     }
     
     isOptimalSwap(i, j) {
@@ -393,7 +415,8 @@ class BubbleSortGame {
 
     resetSelection() {
         this.app.querySelectorAll('.number-box').forEach(item => {
-            item.classList.remove('active');
+            item.classList.remove('active'); // Remove 'active' if still used elsewhere
+            item.classList.remove('comparing-element'); // Also remove 'comparing-element'
         });
     }
     

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlgoGame - User Profile</title>
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="shared/css/layout.css">
+    <link rel="stylesheet" href="shared/css/colors.css">
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <img id="profile-avatar" src="https://via.placeholder.com/120x120?text=Avatar" alt="User Avatar" class="avatar">
+            <h2 id="profile-username">Loading...</h2>
+            <p id="profile-email"></p>
+            <button id="edit-avatar-button">Edit Avatar</button>
+        </div>
+
+        <div class="profile-details">
+            <h3>Progress Tracking</h3>
+            <div id="progress-list">
+                <!-- Progress items will be loaded here by JavaScript -->
+                <div class="progress-item">
+                    <h4>Bubble Sort</h4>
+                    <p>Mastery: <span id="bubbleSort-mastery">None</span></p>
+                    <p>Time Spent: <span id="bubbleSort-timeSpent">0s</span></p>
+                    <p>Accuracy: <span id="bubbleSort-accuracy">0%</span></p>
+                    <p>Games Played: <span id="bubbleSort-gamesPlayed">0</span></p>
+                </div>
+                <div class="progress-item">
+                    <h4>Insertion Sort 1</h4>
+                    <p>Mastery: <span id="insertionSort1-mastery">None</span></p>
+                    <p>Time Spent: <span id="insertionSort1-timeSpent">0s</span></p>
+                    <p>Accuracy: <span id="insertionSort1-accuracy">0%</span></p>
+                    <p>Games Played: <span id="insertionSort1-gamesPlayed">0</span></p>
+                </div>
+                <div class="progress-item">
+                    <h4>Insertion Sort 2</h4>
+                    <p>Mastery: <span id="insertionSort2-mastery">None</span></p>
+                    <p>Time Spent: <span id="insertionSort2-timeSpent">0s</span></p>
+                    <p>Accuracy: <span id="insertionSort2-accuracy">0%</span></p>
+                    <p>Games Played: <span id="insertionSort2-gamesPlayed">0</span></p>
+                </div>
+                <div class="progress-item">
+                    <h4>Binary Search</h4>
+                    <p>Mastery: <span id="binarySearch-mastery">None</span></p>
+                    <p>Time Spent: <span id="binarySearch-timeSpent">0s</span></p>
+                    <p>Accuracy: <span id="binarySearch-accuracy">0%</span></p>
+                    <p>Games Played: <span id="binarySearch-gamesPlayed">0</span></p>
+                </div>
+            </div>
+
+            <h3>Achievements</h3>
+            <ul id="achievements-list">
+                <li>No achievements yet.</li>
+            </ul>
+        </div>
+        <button id="back-to-home">Back to Home</button>
+    </div>
+
+    <script type="module" src="shared/js/firebase-config.js"></script>
+    <script type="module" src="shared/js/user-manager.js"></script>
+    <script type="module" src="js/profile.js"></script>
+</body>
+</html>

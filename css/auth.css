@@ -1,0 +1,102 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.auth-container {
+    background-color: var(--color-surface);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.auth-form h2 {
+    color: var(--color-primary);
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--color-text-secondary);
+}
+
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="text"],
+.form-group input[type="url"] { /* Added input[type="url"] */
+    width: calc(100% - 20px);
+    padding: 12px 10px;
+    border: 1px solid lightgray; /* Changed border to light grey */
+    border-radius: 5px;
+    background-color: var(--color-input-background);
+    color: var(--color-text-primary);
+    font-size: 16px;
+}
+
+.form-group input[type="email"]:focus,
+.form-group input[type="password"]:focus,
+.form-group input[type="text"]:focus {
+    border-color: var(--color-primary);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.2);
+}
+
+button {
+    background-color: var(--color-accent);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 15px;
+}
+
+button:hover {
+    background-color: var(--color-accent-dark);
+}
+
+.auth-form p {
+    margin-top: 20px;
+    color: var(--color-text-secondary);
+}
+
+.auth-form p a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-form p a:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    color: var(--color-error);
+    margin-top: 10px;
+    font-size: 14px;
+    min-height: 18px; /* To prevent layout shifts */
+}
+
+.hidden {
+    display: none;
+}

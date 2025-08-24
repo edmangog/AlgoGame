@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlgoGame - Authentication</title>
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="shared/css/layout.css">
+    <link rel="stylesheet" href="shared/css/colors.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-form" id="login-form">
+            <h2>Login</h2>
+            <form>
+                <div class="form-group">
+                    <label for="login-email">Email:</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password:</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" id="login-button">Login</button>
+                <p class="error-message" id="login-error"></p>
+            </form>
+            <p>Don't have an account? <a href="#" id="show-signup">Sign Up</a></p>
+            <button id="guest-button" class="guest-button">Continue as Guest</button>
+        </div>
+
+        <div class="auth-form hidden" id="signup-form">
+            <h2>Sign Up</h2>
+            <form>
+                <div class="form-group">
+                    <label for="signup-email">Email:</label>
+                    <input type="email" id="signup-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password:</label>
+                    <input type="password" id="signup-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-username">Username:</label>
+                    <input type="text" id="signup-username" required>
+                    <p class="error-message" id="username-check-message"></p>
+                </div>
+                <div class="form-group">
+                    <label for="signup-avatar-url">Avatar URL (optional):</label>
+                    <input type="url" id="signup-avatar-url">
+                </div>
+                <button type="submit" id="signup-button">Sign Up</button>
+                <p class="error-message" id="signup-error"></p>
+            </form>
+            <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+        </div>
+    </div>
+
+    <script type="module" src="js/auth.js"></script>
+</body>
+</html>

@@ -47,15 +47,16 @@
 }
 
 .comparing-element {
-    box-shadow: 0 0 0 3px #FFD700, 0 0 15px #FFA500;
+    border: 0.5px solid #FFFF00; /* Brighter yellow border */
+    box-shadow: 0 0 0 4px #FFEB3B, 0 0 15px #FFC107; /* Brighter yellow/orange glow */
     animation: pulse 2s infinite;
     position: relative;
 }
 
 @keyframes pulse {
-    0% { box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.7); }
-    50% { box-shadow: 0 0 0 8px rgba(255, 165, 0, 0.4); }
-    100% { box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.7); }
+    0% { box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.9); } /* Brighter yellow, higher opacity */
+    50% { box-shadow: 0 0 0 8px rgba(255, 193, 7, 0.6); } /* Brighter orange, higher opacity */
+    100% { box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.9); } /* Brighter yellow, higher opacity */
 }
 
 .annotation {
@@ -117,6 +118,26 @@
     background-color: #4ECDC4;
     transform: scale(1.05);
     transition: all 0.3s ease;
+    border: 3px solid var(--color-primary); /* Added guiding border */
+    box-shadow: 0 0 15px rgba(var(--color-primary-rgb), 0.5); /* Added shadow for prominence */
+}
+
+/* Swapping Animations */
+.number-box.swapping-from {
+    transform: translateY(-10px) scale(1.1);
+    background-color: var(--color-accent-yellow); /* Highlight during "from" state */
+    z-index: 10;
+}
+
+.number-box.swapping-to {
+    transform: translateY(10px) scale(1.1);
+    background-color: var(--color-accent-yellow); /* Highlight during "to" state */
+    z-index: 10;
+}
+
+.number-box.swapping {
+    transition: transform 0.4s ease-in-out, background-color 0.4s ease;
+    z-index: 10;
 }
 
 .score-animation-container {
@@ -319,7 +340,8 @@
 }
 
 .comparing-animation {
-    box-shadow: 0 0 0 3px var(--accent-yellow), 0 0 10px var(--accent-yellow);
+    border: 2px solid var(--accent-yellow); /* Light yellow border */
+    box-shadow: 0 0 0 3px var(--accent-yellow), 0 0 10px rgba(255, 209, 102, 0.7);
     animation: pulse-animation 1.5s infinite;
 }
 
@@ -418,4 +440,28 @@
     font-size: 1em;
     line-height: 1.5;
     margin-bottom: 0;
+}
+
+/* Game Action Buttons (Swap/Skip) */
+.game-action-button {
+    background-color: var(--primary);
+    color: var(--text-light);
+    padding: 15px 30px; /* Increased padding */
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1.3em; /* Increased font size */
+    margin: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px var(--shadow-medium);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.game-action-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px var(--shadow-medium);
 }

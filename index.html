@@ -19,6 +19,10 @@
             <span class="chinese" style="display:none">選擇遊戲開始您的演算法之旅</span>
         </p>
     </div>
+    <div class="auth-buttons">
+        <button id="profile-button" class="hidden">Profile</button>
+        <button id="logout-button" class="hidden">Logout</button>
+    </div>
     <button class="lang-toggle">中/Eng</button>
 
     <div class="game-grid">
@@ -73,7 +77,48 @@
 
     <script type="module">
         import { setupLanguageToggle } from './shared/js/lang-toggle.js';
+        import { auth } from './shared/js/firebase-config.js';
+        import { logoutUser, getUserProfile } from './shared/js/user-manager.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
         setupLanguageToggle();
+
+        const profileButton = document.getElementById('profile-button');
+        const logoutButton = document.getElementById('logout-button');
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // User is signed in
+                profileButton.classList.remove('hidden');
+                logoutButton.classList.remove('hidden');
+
+                const userProfile = await getUserProfile(user.uid);
+                if (userProfile && userProfile.username) {
+                    profileButton.textContent = `Profile (${userProfile.username})`;
+                } else {
+                    console.warn("User profile not found for UID:", user.uid, ". Displaying as Guest.");
+                    profileButton.textContent = `Profile (Guest)`;
+                    // Do NOT force logout/redirect here. Let the user-manager's retry handle it,
+                    // or allow the user to proceed as a guest temporarily.
+                    // The auth.js handles the initial redirection to index.html.
+                }
+            } else {
+                // User is signed out, allow them to remain on index.html as a guest
+                profileButton.classList.add('hidden');
+                logoutButton.classList.add('hidden');
+                profileButton.textContent = 'Profile';
+                // No redirection to auth.html here, allowing guest access.
+            }
+        });
+
+        logoutButton.addEventListener('click', async () => {
+            await logoutUser();
+            // Redirection is handled by onAuthStateChanged listener
+        });
+
+        profileButton.addEventListener('click', () => {
+            window.location.href = 'profile.html';
+        });
     </script>
 </body>
 </html>

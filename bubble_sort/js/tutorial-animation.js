@@ -75,29 +75,36 @@ export function setupTutorialAnimation() {
         animateStep();
     }
 
-    function renderArray(arr, currentI, currentJ) {
+    function renderArray(arr, currentI, currentJ, isSwapping = false, swappedIndices = []) {
         arrayElement.innerHTML = '';
         arr.forEach((num, index) => {
             const numBox = document.createElement('div');
             numBox.classList.add('animation-number-box');
             numBox.textContent = num;
+            numBox.dataset.index = index; // Add data-index for potential reordering
 
             if (index === currentI || index === currentJ) {
                 numBox.classList.add('comparing-animation');
             }
+            if (isSwapping && (index === swappedIndices[0] || index === swappedIndices[1])) {
+                numBox.classList.add('swapping');
+            }
             arrayElement.appendChild(numBox);
         });
 
-        arrayElement.offsetWidth; // Force reflow
+        // If swapping, apply the visual swap
+        if (isSwapping && swappedIndices.length === 2) {
+            const itemI = arrayElement.querySelector(`[data-index="${swappedIndices[0]}"]`);
+            const itemJ = arrayElement.querySelector(`[data-index="${swappedIndices[1]}"]`);
 
-        let firstBoxOffsetLeft = 0;
-        const firstNumBox = arrayElement.querySelector('.animation-number-box');
-        if (firstNumBox) {
-            firstBoxOffsetLeft = firstNumBox.offsetLeft;
+            if (itemI && itemJ) {
+                const distance = itemJ.offsetLeft - itemI.offsetLeft;
+                itemI.style.transform = `translateX(${distance}px)`;
+                itemJ.style.transform = `translateX(${-distance}px)`;
+            }
         }
 
-        // Pointers for i and j are not needed for bubble sort tutorial, so no positioning logic is required.
-        // The elements are removed from the HTML structure.
+        arrayElement.offsetWidth; // Force reflow
     }
 
     let stepIndex = 0;
@@ -109,7 +116,28 @@ export function setupTutorialAnimation() {
 
         if (stepIndex < animationSteps.length) {
             const step = animationSteps[stepIndex];
-            renderArray(step.array, step.i, step.j);
+            
+            if (step.expectedAction === 'swap_start') {
+                renderArray(step.array, step.i, step.j, true, [step.i, step.j]);
+            } else if (step.expectedAction === 'swap_done') {
+                // After the visual swap, update the DOM to reflect the new order
+                renderArray(step.array, step.i, step.j); // Render with the new array order
+                const items = Array.from(arrayElement.children);
+                const itemI = items[step.i];
+                const itemJ = items[step.j];
+
+                if (itemI && itemJ) {
+                    itemI.style.transform = ''; // Reset transform
+                    itemJ.style.transform = ''; // Reset transform
+
+                    // Physically swap the elements in the DOM
+                    const parent = itemI.parentNode;
+                    parent.insertBefore(itemJ, itemI);
+                    parent.insertBefore(itemI, itemJ.nextSibling);
+                }
+            } else {
+                renderArray(step.array, step.i, step.j);
+            }
 
             if (currentPassDisplay) {
                 currentPassDisplay.textContent = step.pass;
@@ -121,9 +149,6 @@ export function setupTutorialAnimation() {
             } else if (step.expectedAction === 'no-swap' && tutorialNoSwapBtn) {
                 tutorialNoSwapBtn.classList.add('clicked');
             }
-            // For 'swap_done' and 'no-swap_done', no button should be highlighted,
-            // as these steps represent the result of the action.
-
 
             stepIndex++;
             animationTimeout = setTimeout(animateStep, 1500);
