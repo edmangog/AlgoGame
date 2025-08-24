@@ -2,3 +2,4 @@
 *.txt
 *.png
 changePlan.md
+shared/js/firebase-config.local.js
