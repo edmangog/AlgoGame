@@ -1,18 +1,24 @@
-# AlgoGame: Learn Algorithms Through Play
+# AlgoGame: Learn Algorithms Through Play 🎮📚
 
 ## Introduction
-AlgoGame is an interactive educational platform designed to introduce secondary students in Hong Kong to the world of algorithms. Specifically tailored for those studying Information and Communication Technology (ICT) and new to algorithmic concepts, AlgoGame makes learning engaging and accessible through gamification.
+AlgoGame is an interactive learning platform designed to introduce secondary school students in Hong Kong to the world of algorithms. Tailored for beginners in Information and Communication Technology (ICT), it makes algorithmic concepts engaging and accessible through gamification.
 
 ## Inspiration & Purpose
-This project is inspired by the video: [https://www.youtube.com/watch?v=cQDuwnTSeCs](https://www.youtube.com/watch?v=cQDuwnTSeCs) and the principles of gamification-based learning. Recognizing a gap in the availability of visually interesting and sufficiently simple games for algorithm beginners, AlgoGame aims to bridge this gap by providing an intuitive and fun learning experience.
+AlgoGame was created to make algorithm learning fun, intuitive, and approachable for students who may find abstract concepts difficult at first.
+
+It draws inspiration from gamification-based learning principles and was inspired by [夏sir網上教室] (https://www.youtube.com/watch?v=cQDuwnTSeCs). The project seeks to transform algorithm practice into enjoyable games that encourage active participation and exploration.
 
 ## How to Play
-You can visit the live version of AlgoGame at [edmangog.github.io/AlgoGame/](https://edmangog.github.io/AlgoGame/) to start your algorithmic journey!
+👉 Try the live version here: [edmangog.github.io/AlgoGame/] (https://edmangog.github.io/AlgoGame/)
+
+No installation is required — simply open the link and start playing!
 
 ## Reporting Issues
-If you encounter any issues or have suggestions for improvement, please report them in the [Issues tab on GitHub](https://github.com/edmangog/AlgoGame/issues). Your feedback is valuable in making AlgoGame better!
+Found a bug or have an idea for improvement?
+Please open an issue in the [GitHub Issues tab] (https://github.com/edmangog/AlgoGame/issues)
+Your feedback helps make AlgoGame better for everyone!
 
-## Currently Available Games
+## Currently Games
 AlgoGame currently features interactive games for fundamental algorithms:
 
 *   **Bubble Sort Game**: Sort numbers by swapping adjacent elements.
@@ -20,11 +26,11 @@ AlgoGame currently features interactive games for fundamental algorithms:
 *   **Insertion Sort Game 2 (Shifting)**: Build a sorted list by shifting elements to make space and inserting the key element.
 *   **Binary Search Game**: Master decrease-and-conquer searching by narrowing down the search range.
 
-## Future Enhancements & Vision
-AlgoGame is continuously evolving with a vision to create a more immersive and rewarding learning experience. Future plans include:
+## Roadmap & Vision 🚀
+AlgoGame is continuously evolving to provide a richer, more rewarding learning experience. Planned enhancements include:
 
 ### Gamification Elements
-*   **User Profile & Progress System**: Persistent user profiles, custom avatars, and progress tracking.
+*   **User Profile & Progress System**: Save progress, create custom avatars, and track learning milestones.
 *   **Achievement System**: Algorithm-specific badges, detailed statistics, and visual progress indicators.
 *   **Algorithm Skill Tree**: A visual representation of algorithm relationships, prerequisites, and unlockable advanced algorithms.
 
@@ -43,4 +49,11 @@ AlgoGame is continuously evolving with a vision to create a more immersive and r
 *   **Visual Enhancements**: Modern UI, dark mode, and improved animations.
 *   **Teacher Tools**: Classroom management features, assignment creation, and student progress analytics.
 
-The project aims to adhere to educational design principles such as learning-first approach, immediate feedback, multiple representations, scaffolded progression, meaningful choices, and celebrating success.
+## Educational Philosophy
+AlgoGame follows key principles of effective learning design:
+* Learning-first approach
+* Immediate feedback
+* Multiple representations
+* Scaffolded progression
+* Meaningful choices
+* Celebrating success
