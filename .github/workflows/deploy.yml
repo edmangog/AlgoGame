@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # Or your deployment branch, e.g., 'master'
+      - userSystem # Changed to trigger on the userSystem branch
 
 jobs:
   build-and-deploy:
