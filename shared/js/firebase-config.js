@@ -1,12 +1,12 @@
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDqJWaspNep7J5G0uNR6yn0FY-VyBEzIb0",
-  authDomain: "algogame-e210a.firebaseapp.com",
-  projectId: "algogame-e210a",
-  storageBucket: "algogame-e210a.firebasestorage.app",
-  messagingSenderId: "332718976071",
-  appId: "1:332718976071:web:a24e2e81aa138cbd23d562",
-  measurementId: "G-Q8CP0PLTXG"
+  apiKey: "VITE_FIREBASE_API_KEY",
+  authDomain: "VITE_FIREBASE_AUTH_DOMAIN",
+  projectId: "VITE_FIREBASE_PROJECT_ID",
+  storageBucket: "VITE_FIREBASE_STORAGE_BUCKET",
+  messagingSenderId: "VITE_FIREBASE_MESSAGING_SENDER_ID",
+  appId: "VITE_FIREBASE_APP_ID",
+  measurementId: "VITE_FIREBASE_MEASUREMENT_ID"
 };
 
 // Initialize Firebase
