@@ -26,6 +26,12 @@ jobs:
           sed -i "s|VITE_FIREBASE_APP_ID|${{ secrets.FIREBASE_APP_ID }}|g" shared/js/firebase-config.js
           sed -i "s|VITE_FIREBASE_MEASUREMENT_ID|${{ secrets.FIREBASE_MEASUREMENT_ID }}|g" shared/js/firebase-config.js
 
+      - name: Verify Firebase Config
+        run: |
+          echo "--- Content of shared/js/firebase-config.js after replacement ---"
+          cat shared/js/firebase-config.js
+          echo "-----------------------------------------------------------------"
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
