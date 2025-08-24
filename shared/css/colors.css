@@ -1,0 +1,13 @@
+:root {
+    --primary: #FF6B6B; /* Vibrant Red */
+    --secondary: #4ECDC4; /* Teal */
+    --accent-yellow: #FFD166; /* Sunny Yellow */
+    --accent-blue: #06D6A0; /* Emerald Green/Blue */
+    --background: #F8F9FA; /* Light Gray Background */
+    --card-background: #FFFFFF; /* White Card Background */
+    --text-dark: #2c3e50; /* Dark Text */
+    --text-light: #ffffff; /* Light Text */
+    --shadow-light: rgba(0, 0, 0, 0.1);
+    --shadow-medium: rgba(0, 0, 0, 0.2);
+    --primary-dark: #E05A5A; /* Darker shade of Vibrant Red */
+}

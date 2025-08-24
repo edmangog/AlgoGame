@@ -1,0 +1,541 @@
+import { createElement, formatTime } from '../../shared/js/utils.js';
+import { setupLanguageToggle } from '../../shared/js/lang-toggle.js';
+
+class BubbleSortGame {
+    constructor() {
+        this.currentNumbers = [];
+        this.score = 0; // Added scoring system
+        this.startTime = Date.now();
+        this.timerInterval = null;
+        this.language = 'english';
+        this.currentIndex = 0;
+        this.currentPass = 1;
+
+        // Get audio elements for sound effects
+        this.correctSound = document.getElementById('correctSound');
+        this.incorrectSound = document.getElementById('incorrectSound');
+        // Removed winSound and loseSound as they are not present in index.html
+        
+        // Encouraging messages for all actions
+        this.feedbackMessages = {
+            correct: {
+                english: [
+                    "Awesome! 😊 ",
+                    "Perfect move! 🌟 ",
+                    "Great decision! 👍",
+                    "Well done! 🎉 ",
+                    "Excellent choice! 💯!"
+                ],
+                chinese: [
+                    "太棒了！😊 ",
+                    "完美的選擇！🌟 ",
+                    "明智的決定！👍 ",
+                    "做得好！🎉 ",
+                    "出色的選擇！💯 "
+                ]
+            },
+            incorrect: {
+                english: [
+                    "Oops! Don't worry, keep going! 💪",
+                    "Not quite! You'll get it next time! 😊",
+                    "Mistakes happen!  Keep learning! 🌟",
+                    "Almost!  You're making progress! 👍",
+                    "No problem!  Every expert was a beginner! 🎓"
+                ],
+                chinese: [
+                    "哎呀！別擔心，繼續加油！💪",
+                    "差一點！下次會更好！😊",
+                    "犯錯是學習的一部分！繼續進步！🌟",
+                    "接近了！你正在進步！👍",
+                    "沒關係！每個專家都曾是新手！🎓"
+                ]
+            }
+        };
+        
+        this.init();
+    }
+    
+    // Get a random feedback message based on action type and language
+    getRandomFeedback(type) {
+        const messages = this.feedbackMessages[type][this.language];
+        return messages[Math.floor(Math.random() * messages.length)];
+    }
+    
+    // Get a random encouraging message based on current language
+    getRandomEncouragement() {
+        const messages = this.encouragingMessages[this.language];
+        return messages[Math.floor(Math.random() * messages.length)];
+    }
+
+    init() {
+        this.setupDOM();
+        this.setupEventListeners();
+        setupLanguageToggle(); // Initialize after DOM is ready
+        this.showTutorialOrStartGame();
+    }
+
+    setupDOM() {
+        this.app = document.getElementById('app');
+        // The tutorial modal is now directly in index.html, so we don't need to create it here.
+        // We only need to render the main game content.
+        this.app.innerHTML = `
+            <div class="container">
+                <div class="header-container">
+                    <div>
+                        <h1>
+                            <span class="english">Bubble Sort Game</span>
+                            <span class="chinese" style="display:none;">冒泡排序遊戲</span>
+                        </h1>
+                        <div class="subtitle english">Sort the numbers in ascending order!</div>
+                        <div class="subtitle chinese" style="display:none;">將數字按從小到大排序！</div>
+                    </div>
+                    <div class="other-controls">
+                        <div class="difficulty">
+                            <span class="english">Difficulty:</span>
+                            <span class="chinese" style="display:none;">難度:</span>
+                            <select id="difficulty">
+                                <option value="easy">Easy (6)</option>
+                                <option value="medium">Medium (8)</option>
+                                <option value="hard">Hard (10)</option>
+                            </select>
+                        </div>
+                        <button class="new-game">
+                            <span class="english">New Game</span>
+                            <span class="chinese" style="display:none;">新遊戲</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="game-area">
+                    ${this.createScoreBoard()}
+                    <div class="number-line" id="numberLine"></div>
+                    ${this.createControls()}
+                </div>
+            </div>
+        `;
+    }
+    
+    createControls() {
+        return `
+            <div class="controls">
+                <div class="core-buttons-container">
+                    <div class="core-buttons">
+                        <button class="swap-btn game-action-button">
+                            🔄 <span class="english">Swap</span>
+                            <span class="chinese" style="display:none;">交換</span>
+                        </button>
+                        <button class="skip-btn game-action-button">
+                            ✅ <span class="english">Skip</span>
+                            <span class="chinese" style="display:none;">跳過</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="feedbackMessage" style="display:none; color: #e74c3c; font-weight: bold; margin: 5px 0; text-align: center;"></div>
+            </div>
+        `;
+    }
+
+    createScoreBoard() {
+        return `
+            <div class="score-animation-container"></div>
+            <div class="big-score">
+                <span class="english">SCORE: </span>
+                <span class="chinese" style="display:none;">分數: </span>
+                <span id="bigScore">0</span>
+            </div>
+            <div class="score-board">
+                <div style="flex: 1; text-align: right;">
+                    <span class="english">Pass: </span>
+                    <span class="chinese" style="display:none;">遍歷次數: </span>
+                    <span id="passCount">1</span>
+                </div>
+                <div style="flex: 1; text-align: left;">
+                    <span class="english">Time: </span>
+                    <span class="chinese" style="display:none;">時間: </span>
+                    <span id="timer">0</span>s
+                </div>
+            </div>
+        `;
+    }
+
+    // Removed createTutorial as it's now in index.html
+
+    setupEventListeners() {
+        this.app.querySelector('.new-game').addEventListener('click', () => this.newGame());
+        // Touch event handlers
+        this.app.querySelector('.swap-btn').addEventListener('click', () => this.swapCurrent());
+        this.app.querySelector('.skip-btn').addEventListener('click', () => this.skipCurrent());
+        
+        // Add touch event listeners for swipe gestures
+        const numberLine = this.app.querySelector('#numberLine');
+        numberLine.addEventListener('touchstart', this.handleTouchStart.bind(this), false);
+        numberLine.addEventListener('touchmove', this.handleTouchMove.bind(this), false);
+        numberLine.addEventListener('touchend', this.handleTouchEnd.bind(this), false);
+        
+        // Initialize touch tracking variables
+        this.touchStartX = 0;
+        this.touchStartY = 0;
+        this.touchEndX = 0;
+        this.touchEndY = 0;
+        
+        // Tutorial modal buttons
+        document.getElementById('start-game-button').addEventListener('click', () => {
+            document.getElementById('tutorial-modal').style.display = 'none';
+            localStorage.setItem('bubbleSortTutorialSeen', 'true');
+            this.newGame();
+        });
+
+        document.getElementById('skip-tutorial-button').addEventListener('click', () => {
+            document.getElementById('tutorial-modal').style.display = 'none';
+            localStorage.setItem('bubbleSortTutorialSeen', 'true');
+            this.newGame();
+        });
+    }
+
+    showTutorialOrStartGame() {
+        const tutorialModal = document.getElementById('tutorial-modal');
+        const tutorialSeen = localStorage.getItem('bubbleSortTutorialSeen');
+
+        if (!tutorialSeen) {
+            tutorialModal.style.display = 'flex'; // Show the tutorial modal
+        } else {
+            tutorialModal.style.display = 'none'; // Hide it if already seen
+            this.newGame(); // Start the game directly
+        }
+    }
+    
+    newGame() {
+        clearInterval(this.timerInterval);
+        this.swapCount = 0;
+        this.score = 0; // Reset score
+        this.startTime = Date.now();
+        this.currentIndex = 0;
+        this.currentPass = 1;
+        this.updateScoreBoard();
+        this.generateNumbers();
+        this.startTimer();
+        this.highlightCurrentPair();
+    }
+
+    generateNumbers() {
+        const difficulty = document.getElementById('difficulty').value;
+        let size = 6;
+        if (difficulty === 'medium') size = 8;
+        if (difficulty === 'hard') size = 10;
+        
+        this.currentNumbers = Array.from({length: size}, () => Math.floor(Math.random() * 50) + 1);
+        const numberLine = this.app.querySelector('#numberLine');
+        numberLine.innerHTML = '';
+        this.currentNumbers.forEach((num, i) => {
+            const numBox = createElement('div', 'number-box', num);
+            numBox.dataset.index = i;
+            numberLine.appendChild(numBox);
+        });
+    }
+
+    swapCurrent() {
+        if (this.currentIndex >= this.currentNumbers.length - 1) return;
+        
+        const i = this.currentIndex;
+        const j = i + 1;
+        const shouldSwap = this.currentNumbers[i] > this.currentNumbers[j];
+        
+        if (shouldSwap) {
+            this.swapNumbers(i, j, () => { // Pass nextStep as a callback
+                this.score += 10; // Correct swap
+                this.updateScoreBoard();
+                this.showScoreAnimation(10); // Show +10 animation
+                this.showFeedbackMessage(this.getRandomFeedback('correct'));
+                this.playCorrectSound(); // Play sound for correct swap
+                this.nextStep();
+            });
+        } else {
+            this.score = Math.max(0, this.score - 10); // Incorrect swap
+            this.updateScoreBoard();
+            this.showScoreAnimation(-10); // Show -10 animation
+            this.showFeedbackMessage(this.getRandomFeedback('incorrect'));
+            this.playIncorrectSound(); // Play sound for incorrect swap
+            this.nextStep(); // Call nextStep immediately if no swap animation
+        }
+    }
+    
+    showScoreAnimation(pointsChange) {
+        const animationContainer = this.app.querySelector('.score-animation-container');
+        if (!animationContainer) return;
+        
+        // Create animation element
+        const animElement = document.createElement('div');
+        animElement.className = `score-change ${pointsChange > 0 ? 'positive-change' : 'negative-change'}`;
+        animElement.textContent = (pointsChange > 0 ? '🌟 +' : '📖 ') + pointsChange;
+        
+        // Add to animation container
+        animationContainer.appendChild(animElement);
+        
+        // Remove after animation completes
+        setTimeout(() => {
+            animElement.remove();
+        }, 1500);
+    }
+    
+    showFeedbackMessage(message) {
+        const feedbackElement = document.getElementById('feedbackMessage');
+        if (!feedbackElement) return;
+        
+        feedbackElement.textContent = message;
+        feedbackElement.style.display = 'block';
+        setTimeout(() => {
+            feedbackElement.style.display = 'none';
+        }, 4000); // Show for 4 seconds
+    }
+    
+    skipCurrent() {
+        if (this.currentIndex >= this.currentNumbers.length - 1) return;
+        
+        const i = this.currentIndex;
+        const j = i + 1;
+        const shouldNotSwap = this.currentNumbers[i] <= this.currentNumbers[j];
+        
+        if (shouldNotSwap) {
+            this.score += 10; // Correct skip
+            this.updateScoreBoard();
+            this.showScoreAnimation(10); // Show +10 animation
+            this.showFeedbackMessage(this.getRandomFeedback('correct'));
+            this.playCorrectSound(); // Play sound for correct skip
+        } else {
+            this.score = Math.max(0, this.score - 10); // Incorrect skip
+            this.updateScoreBoard();
+            this.showScoreAnimation(-10); // Show -10 animation
+            this.showFeedbackMessage(this.getRandomFeedback('incorrect'));
+            this.playIncorrectSound(); // Play sound for incorrect skip
+        }
+        
+        this.nextStep(); // Always call nextStep immediately for skip
+    }
+    
+    nextStep() {
+        this.currentIndex++;
+        
+        if (this.currentIndex >= this.currentNumbers.length - 1) {
+            this.currentPass++;
+            this.updateScoreBoard();
+            
+            // Always proceed to next pass without early termination
+            if (this.checkWin()) {
+                return; // Game has ended after completing all passes
+            }
+            
+            this.currentIndex = 0;
+            this.highlightCurrentPair();
+        } else {
+            this.highlightCurrentPair();
+        }
+    }
+    
+    highlightCurrentPair() {
+        this.resetSelection();
+        
+        const items = this.app.querySelectorAll('.number-box');
+        items.forEach(item => item.classList.remove('comparing-element'));
+        
+        if (this.currentIndex < this.currentNumbers.length - 1) {
+            items[this.currentIndex].classList.add('comparing-element');
+            items[this.currentIndex + 1].classList.add('comparing-element');
+        }
+    }
+
+    swapNumbers(i, j, callback) {
+        const items = this.app.querySelectorAll('.number-box');
+        const itemI = items[i];
+        const itemJ = items[j];
+
+        // Update the internal array first
+        [this.currentNumbers[i], this.currentNumbers[j]] = [this.currentNumbers[j], this.currentNumbers[i]];
+
+        // Add a class to indicate they are about to swap and apply initial transform
+        itemI.classList.add('swapping');
+        itemJ.classList.add('swapping');
+
+        // Calculate the distance to move
+        const distance = itemJ.offsetLeft - itemI.offsetLeft;
+
+        // Apply transform to move them
+        itemI.style.transform = `translateX(${distance}px)`;
+        itemJ.style.transform = `translateX(${-distance}px)`;
+
+        // After the animation, reset transforms and physically swap elements
+        setTimeout(() => {
+            itemI.style.transform = ''; // Reset transform
+            itemJ.style.transform = ''; // Reset transform
+
+            // Physically swap the elements in the DOM
+            const parent = itemI.parentNode;
+            // Ensure correct insertion order
+            if (i < j) {
+                parent.insertBefore(itemJ, itemI);
+                parent.insertBefore(itemI, itemJ.nextSibling);
+            } else {
+                // This case shouldn't happen in bubble sort, but for completeness
+                parent.insertBefore(itemI, itemJ);
+                parent.insertBefore(itemJ, itemI.nextSibling);
+            }
+
+            // Update dataset indices to reflect new positions
+            itemI.dataset.index = j;
+            itemJ.dataset.index = i;
+
+            // Remove swapping class
+            itemI.classList.remove('swapping');
+            itemJ.classList.remove('swapping');
+
+            // Check if swap was optimal
+            if (this.isOptimalSwap(i, j)) {
+                itemI.classList.add('optimal');
+                itemJ.classList.add('optimal');
+                setTimeout(() => {
+                    itemI.classList.remove('optimal');
+                    itemJ.classList.remove('optimal');
+                }, 1000);
+            }
+            
+            // Execute callback after animation and DOM update
+            if (callback) {
+                callback();
+            }
+        }, 400); // This timeout should match the CSS transition duration for .swapping
+    }
+    
+    isOptimalSwap(i, j) {
+        // Check if this was the next optimal swap
+        const nextSwap = this.findNextOptimalSwap();
+        return nextSwap && (
+            (i === nextSwap[0] && j === nextSwap[1]) || 
+            (j === nextSwap[0] && i === nextSwap[1])
+        );
+    }
+
+    resetSelection() {
+        this.app.querySelectorAll('.number-box').forEach(item => {
+            item.classList.remove('active'); // Remove 'active' if still used elsewhere
+            item.classList.remove('comparing-element'); // Also remove 'comparing-element'
+        });
+    }
+    
+    // Touch event handlers for swipe gestures
+    handleTouchStart(event) {
+        this.touchStartX = event.touches[0].clientX;
+        this.touchStartY = event.touches[0].clientY;
+    }
+    
+    handleTouchMove(event) {
+        if (!this.touchStartX || !this.touchStartY) return;
+        
+        this.touchEndX = event.touches[0].clientX;
+        this.touchEndY = event.touches[0].clientY;
+        
+        // Prevent scrolling if we're detecting a horizontal swipe
+        const diffX = Math.abs(this.touchEndX - this.touchStartX);
+        const diffY = Math.abs(this.touchEndY - this.touchStartY);
+        
+        if (diffX > diffY) {
+            event.preventDefault();
+        }
+    }
+    
+    handleTouchEnd() {
+        if (!this.touchStartX || !this.touchStartY || !this.touchEndX || !this.touchEndY) return;
+        
+        const diffX = this.touchEndX - this.touchStartX;
+        const diffY = this.touchEndY - this.touchStartY;
+        
+        // Only consider horizontal swipes with minimal vertical movement
+        if (Math.abs(diffX) > 50 && Math.abs(diffY) < 50) {
+            if (diffX > 0) {
+                this.swapCurrent(); // Swipe right to swap
+            } else {
+                this.skipCurrent(); // Swipe left to skip
+            }
+        }
+        
+        // Reset touch points
+        this.touchStartX = 0;
+        this.touchStartY = 0;
+        this.touchEndX = 0;
+        this.touchEndY = 0;
+    }
+
+    startTimer() {
+        this.timerInterval = setInterval(() => {
+            const timeElapsed = Math.floor((Date.now() - this.startTime) / 1000);
+            this.app.querySelector('#timer').textContent = timeElapsed;
+        }, 1000);
+    }
+
+    updateScoreBoard() {
+        // Removed swapCount display
+        this.app.querySelector('#passCount').textContent = this.currentPass;
+        this.app.querySelector('#bigScore').textContent = this.score; // Update big score display
+    }
+
+    checkWin() {
+        // Only check win condition after completing all passes
+        if (this.currentPass >= this.currentNumbers.length) {
+            clearInterval(this.timerInterval);
+            const timeTaken = Math.floor((Date.now() - this.startTime) / 1000);
+            
+            // Set pass count to n-1 before showing results
+            this.currentPass = this.currentNumbers.length - 1;
+            this.updateScoreBoard();
+            
+            if (this.currentNumbers.every((val, i, arr) => !i || arr[i-1] <= val)) {
+                setTimeout(() => {
+                    // Removed playWinSound()
+                    alert(this.language === 'english' 
+                        ? `Congratulations! Sorted in ${timeTaken} seconds! Starting new game...` 
+                        : `恭喜！耗時${timeTaken}秒完成排序！即將開始新遊戲...`);
+                    setTimeout(() => {
+                        this.newGame();
+                    }, 600);
+                }, 500);
+                return true; // Game ended with win
+            } else {
+                const completedPasses = this.currentNumbers.length - 1;
+                setTimeout(() => {
+                    // Removed playLoseSound()
+                    alert(this.language === 'english' 
+                        ? `Game over! The array wasn't sorted after ${completedPasses} passes. Starting new game...` 
+                        : `遊戲結束！經過${completedPasses}次遍歷，數組仍未排序完成。即將開始新遊戲...`);
+                    setTimeout(() => {
+                        this.newGame();
+                    }, 600);
+                }, 500);
+                return true; // Game ended with loss
+            }
+        }
+        return false; // Game continues
+    }
+
+    findNextOptimalSwap() {
+        for (let i = 0; i < this.currentNumbers.length - 1; i++) {
+            if (this.currentNumbers[i] > this.currentNumbers[i + 1]) {
+                return [i, i + 1];
+            }
+        }
+        return null;
+    }
+
+    playCorrectSound() {
+        if (this.correctSound) {
+            this.correctSound.play().catch(e => console.error("Error playing correct sound:", e));
+        }
+    }
+
+    playIncorrectSound() {
+        if (this.incorrectSound) {
+            this.incorrectSound.play().catch(e => console.error("Error playing incorrect sound:", e));
+        }
+    }
+
+}
+
+// Initialize the game when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => new BubbleSortGame());

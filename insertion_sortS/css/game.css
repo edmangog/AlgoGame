@@ -1,0 +1,269 @@
+/* Base styles */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    margin: 0;
+    color: #2c3e50;
+}
+
+.subtitle {
+    color: #7f8c8d;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.other-controls {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.difficulty {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+select, .new-game {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background: white;
+    font-size: 14px;
+}
+
+.new-game {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.new-game:hover {
+    background-color: #2980b9;
+}
+
+/* Game area */
+.game-area {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.score-board {
+    margin-bottom: 20px;
+    text-align: center;
+    margin: 0px 0px 5% 0px;
+}
+
+.big-score {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0px 0px 10px 0px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #2c3e50;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    padding: 8px 20px;
+    background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-width: 400px;
+    justify-content: center;
+}
+
+.time-row {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    font-size: 18px;
+}
+
+/* Number line - matches insertion_sort style */
+.number-line {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 30px 0;
+    min-height: 100px;
+}
+
+.number-box {
+    width: 60px;
+    height: 60px;
+    background: var(--secondary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    transition: transform 0.3s;
+    position: relative;
+}
+
+/* Key element style - matches insertion_sort with pull-down animation */
+.number-box.key {
+    border: 3px solid gold;
+    transform: scale(1.1) translateY(20px);
+    box-shadow: 0 0 15px rgba(255,215,0,0.8);
+    position: relative;
+    transition: transform 0.4s ease-in-out;
+}
+
+.number-box.key::after {
+    content: 'KEY';
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: gold;
+    color: black;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Shift animation */
+@keyframes shiftRight {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(75px); }
+}
+
+.number-box.shifting {
+    animation: shiftRight 0.5s ease-in-out;
+    z-index: 10;
+}
+
+/* Controls - matches bubble_sort style */
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: -10px;
+}
+
+.core-buttons-container {
+    display: flex;
+    justify-content: center;
+}
+
+.core-buttons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.core-buttons button {
+    padding: 12px 25px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+}
+
+.shift-btn {
+    background-color: #3498db;
+    color: white;
+}
+
+.shift-btn:hover {
+    background-color: #2980b9;
+}
+
+.insert-btn {
+    background-color: #2ecc71;
+    color: white;
+}
+
+.insert-btn:hover {
+    background-color: #27ae60;
+}
+
+.skip-btn {
+    background-color: #e67e22;
+    color: white;
+}
+
+.skip-btn:hover {
+    background-color: #d35400;
+}
+
+/* Tutorial */
+.tutorial {
+    background-color: #ecf0f1;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.tutorial h3 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.tutorial p {
+    margin: 10px 0;
+}
+
+/* Score animation - matches bubble_sort style */
+.score-animation-container {
+    position: relative;
+    height: 40px;
+    left: 5%;
+}
+
+.score-change {
+    position: absolute;
+    font-weight: bold;
+    font-size: 24px;
+    z-index: 100;
+    animation: scoreChangeAnimation 1.5s ease-out;
+    pointer-events: none;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+}
+
+@keyframes scoreChangeAnimation {
+    0% {
+        transform: translate(-50%, -50px);
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, 0);
+        opacity: 0;
+    }
+}
+
+.positive-change {
+    color: #2ecc71;
+}
+
+.negative-change {
+    color: #e74c3c;
+}

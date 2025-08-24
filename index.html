@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Algorithm Learning Games</title>
+    <link rel="stylesheet" href="shared/css/colors.css">
+    <link rel="stylesheet" href="shared/css/layout.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <div class="header">
+        <h1>
+            <span class="english">Learn Algorithms Through Play</span>
+            <span class="chinese" style="display:none">透過遊戲學習演算法</span>
+        </h1>
+        <p>
+            <span class="english">Choose a game and start your journey into the world of algorithms!</span>
+            <span class="chinese" style="display:none">選擇遊戲開始您的演算法之旅</span>
+        </p>
+    </div>
+    <div class="auth-buttons">
+        <button id="profile-button" class="hidden">Profile</button>
+        <button id="logout-button" class="hidden">Logout</button>
+    </div>
+    <button class="lang-toggle">中/Eng</button>
+
+    <div class="game-grid">
+        <a href="bubble_sort/index.html" class="game-card">
+            <h2 class="game-title">
+                <span class="english">Bubble Sort Game</span>
+                <span class="chinese" style="display:none">冒泡排序遊戲</span>
+            </h2>
+            <p>
+                <span class="english">Sort numbers by swapping adjacent elements in this classic sorting challenge. See how quickly you can arrange the array while mastering the fundamentals of sorting algorithms!</span>
+                <span class="chinese" style="display:none">在這個經典的排序挑戰中，透過交換相鄰元素來完成排序。看看你能多快排好整個陣列，同時掌握排序演算法的基礎！</span>
+            </p>
+        </a>
+
+        <a href="insertion_sort/index.html" class="game-card">
+            <h2 class="game-title">
+                <span class="english">Insertion Sort Game 1</span>
+                <span class="chinese" style="display:none">插入排序遊戲 1</span>
+            </h2>
+            <p>
+                <span class="english">Build the sorted list by repeatedly <b>swapping</b> the key element with its left neighbor until it is in the correct position!</span>
+                <span class="chinese" style="display:none">透過不斷將「關鍵元素」與左邊相鄰元素交換，直到放在正確位置來建立排序好的清單！</span>
+            </p>
+        </a>
+
+        <a href="insertion_sortS/index.html" class="game-card">
+            <h2 class="game-title">
+                <span class="english">Insertion Sort Game 2</span>
+                <span class="chinese" style="display:none">插入排序遊戲 2</span>
+            </h2>
+            <p>
+                <span class="english">Build the sorted list by <b>shifting</b> elements to make space and inserting the key element into its correct position!</span>
+                <span class="chinese" style="display:none">將元素依序移動以騰出空間，再將「關鍵元素」插入正確位置，逐步完成排序</span>
+            </p>
+        </a>
+
+        <a href="binary_search/index.html" class="game-card">
+            <h2 class="game-title">
+                <span class="english">Binary Search Game</span>
+                <span class="chinese" style="display:none">二元搜尋遊戲</span>
+            </h2>
+            <p>
+                <span class="english">Master Decrease-and-conquer searching by repeatedly narrowing down the search range until you find the target!</span>
+                <span class="chinese" style="display:none">透過不斷縮小搜尋範圍直到找到目標，掌握减治法在搜尋陣列上的應用</span>
+            </p>
+        </a>
+    </div>
+    
+    <footer class="footer">
+        <p>&copy; 2025 AlgoGame. All rights reserved.</p>
+    </footer>
+
+    <script type="module">
+        import { setupLanguageToggle } from './shared/js/lang-toggle.js';
+        import { auth } from './shared/js/firebase-config.js';
+        import { logoutUser, getUserProfile } from './shared/js/user-manager.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+        setupLanguageToggle();
+
+        const profileButton = document.getElementById('profile-button');
+        const logoutButton = document.getElementById('logout-button');
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // User is signed in
+                profileButton.classList.remove('hidden');
+                logoutButton.classList.remove('hidden');
+
+                const userProfile = await getUserProfile(user.uid);
+                if (userProfile && userProfile.username) {
+                    profileButton.textContent = `Profile (${userProfile.username})`;
+                } else {
+                    console.warn("User profile not found for UID:", user.uid, ". Displaying as Guest.");
+                    profileButton.textContent = `Profile (Guest)`;
+                    // Do NOT force logout/redirect here. Let the user-manager's retry handle it,
+                    // or allow the user to proceed as a guest temporarily.
+                    // The auth.js handles the initial redirection to index.html.
+                }
+            } else {
+                // User is signed out, allow them to remain on index.html as a guest
+                profileButton.classList.add('hidden');
+                logoutButton.classList.add('hidden');
+                profileButton.textContent = 'Profile';
+                // No redirection to auth.html here, allowing guest access.
+            }
+        });
+
+        logoutButton.addEventListener('click', async () => {
+            await logoutUser();
+            // Redirection is handled by onAuthStateChanged listener
+        });
+
+        profileButton.addEventListener('click', () => {
+            window.location.href = 'profile.html';
+        });
+    </script>
+</body>
+</html>

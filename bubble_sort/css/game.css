@@ -1,0 +1,467 @@
+/* Bubble Sort Game Styles */
+.header-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.other-controls {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.difficulty select {
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    background: white;
+    font-size: 0.9rem;
+}
+
+.number-line {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.number-box {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--secondary);
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 5px;
+    border-radius: 8px;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+.comparing-element {
+    border: 0.5px solid #FFFF00; /* Brighter yellow border */
+    box-shadow: 0 0 0 4px #FFEB3B, 0 0 15px #FFC107; /* Brighter yellow/orange glow */
+    animation: pulse 2s infinite;
+    position: relative;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.9); } /* Brighter yellow, higher opacity */
+    50% { box-shadow: 0 0 0 8px rgba(255, 193, 7, 0.6); } /* Brighter orange, higher opacity */
+    100% { box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.9); } /* Brighter yellow, higher opacity */
+}
+
+.annotation {
+    position: absolute;
+    bottom: -25px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--text-dark);
+    z-index: 10;
+    white-space: nowrap;
+}
+
+.annotation.left { left: 50%; transform: translateX(-50%); }
+.annotation.mid { left: 50%; transform: translateX(-50%); }
+.annotation.right { left: 50%; transform: translateX(-50%); }
+
+.number-line {
+    position: relative;
+    min-height: 100px;
+    padding-bottom: 10px;
+}
+
+.eliminated {
+    opacity: 0.3;
+    background-color: #ccc;
+}
+
+.core-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.core-buttons button {
+    flex: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.core-buttons button.disabled-button {
+    background: #cccccc !important;
+    color: #666666 !important;
+    cursor: not-allowed;
+    transform: none !important;
+    opacity: 0.7;
+}
+
+.feedback-message {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    min-height: 30px;
+}
+
+.number-box.active {
+    background-color: #4ECDC4;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+    border: 3px solid var(--color-primary); /* Added guiding border */
+    box-shadow: 0 0 15px rgba(var(--color-primary-rgb), 0.5); /* Added shadow for prominence */
+}
+
+/* Swapping Animations */
+.number-box.swapping-from {
+    transform: translateY(-10px) scale(1.1);
+    background-color: var(--color-accent-yellow); /* Highlight during "from" state */
+    z-index: 10;
+}
+
+.number-box.swapping-to {
+    transform: translateY(10px) scale(1.1);
+    background-color: var(--color-accent-yellow); /* Highlight during "to" state */
+    z-index: 10;
+}
+
+.number-box.swapping {
+    transition: transform 0.4s ease-in-out, background-color 0.4s ease;
+    z-index: 10;
+}
+
+.score-animation-container {
+    position: relative;
+    height: 40px;
+    margin-bottom: 10px;
+    left: 5%;
+}
+
+.score-change {
+    position: absolute;
+    font-weight: bold;
+    font-size: 24px;
+    z-index: 100;
+    animation: scoreChangeAnimation 1.5s ease-out;
+    pointer-events: none;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+}
+
+@keyframes scoreChangeAnimation {
+    0% {
+        transform: translate(-50%, -50px);
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, 0);
+        opacity: 0;
+    }
+}
+
+.positive-change {
+    color: #2ecc71;
+}
+
+.negative-change {
+    color: #e74c3c;
+}
+
+.big-score {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+    color: #2c3e50;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    padding: 5px 15px;
+    background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .other-controls {
+        margin-top: 10px;
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .number-box {
+        width: 50px;
+        height: 50px;
+        font-size: 1rem;
+    }
+    
+    .annotation {
+        bottom: -35px;
+        font-size: 0.8rem;
+    }
+    
+    .big-score {
+        font-size: 24px;
+    }
+}
+
+/* Tutorial Modal Styles */
+.modal {
+    display: flex;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 700px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    text-align: center;
+    color: #333;
+}
+
+.modal-content h2 {
+    color: var(--primary);
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.modal-content h3 {
+    color: var(--secondary);
+    margin-top: 25px;
+    margin-bottom: 10px;
+    font-size: 1.5em;
+}
+
+.modal-content p, .modal-content ol {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-align: left;
+    padding: 0 20px;
+}
+
+.modal-content ol {
+    list-style-position: inside;
+    padding-left: 0;
+}
+
+.modal-content li {
+    margin-bottom: 8px;
+}
+
+.modal-content button {
+    background-color: var(--primary);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.modal-content button:hover {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+}
+
+#skip-tutorial-button {
+    background-color: #6c757d;
+}
+
+#skip-tutorial-button:hover {
+    background-color: #5a6268;
+}
+
+/* Tutorial Animation Styles */
+.animation-array-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    position: relative;
+    width: 100%;
+    padding-bottom: 20px;
+}
+
+.animation-array {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0;
+}
+
+.animation-number-box {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--secondary);
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    margin: 0 5px;
+    border-radius: 5px;
+    transition: all 0.5s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.comparing-animation {
+    border: 2px solid var(--accent-yellow); /* Light yellow border */
+    box-shadow: 0 0 0 3px var(--accent-yellow), 0 0 10px rgba(255, 209, 102, 0.7);
+    animation: pulse-animation 1.5s infinite;
+}
+
+@keyframes pulse-animation {
+    0% { box-shadow: 0 0 0 3px rgba(255, 209, 102, 0.7); }
+    50% { box-shadow: 0 0 0 8px rgba(255, 209, 102, 0.4); }
+    100% { box-shadow: 0 0 0 3px rgba(255, 209, 102, 0.7); }
+}
+
+.animation-pointers {
+    position: absolute;
+    bottom: -5px;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.pointer {
+    position: absolute;
+    background-color: var(--primary);
+    color: white;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    white-space: nowrap;
+    transform: translateX(-50%);
+    transition: left 0.5s ease;
+    z-index: 5;
+    display: none;
+}
+
+.tutorial-action-button {
+    background-color: var(--primary);
+    color: var(--text-light);
+    padding: 12px 25px;
+    border: none;
+    border-radius: 30px;
+    cursor: not-allowed;
+    font-size: 1.1em;
+    margin: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px var(--shadow-medium);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.tutorial-action-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px var(--shadow-medium);
+    cursor: not-allowed;
+}
+
+#tutorial-replay-button:hover{
+    cursor:pointer;
+}
+
+.tutorial-action-button.clicked {
+    background-color: var(--accent-yellow);
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255, 209, 102, 0.7);
+}
+
+.tutorial-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Removed specific pointer styles as they are no longer needed */
+
+/* Game Description Styles */
+.game-description {
+    background-color: #f0f8ff;
+    border: 1px solid #b0e0e6;
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin-top: 20px;
+    text-align: left;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    color: #333;
+}
+
+.game-description h3 {
+    color: var(--primary);
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.3em;
+}
+
+.game-description p {
+    font-size: 1em;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+/* Game Action Buttons (Swap/Skip) */
+.game-action-button {
+    background-color: var(--primary);
+    color: var(--text-light);
+    padding: 15px 30px; /* Increased padding */
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1.3em; /* Increased font size */
+    margin: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px var(--shadow-medium);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.game-action-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px var(--shadow-medium);
+}

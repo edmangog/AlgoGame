@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Search Game</title>
+    <link rel="stylesheet" href="../shared/css/colors.css">
+    <link rel="stylesheet" href="../shared/css/layout.css">
+    <link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+    <div id="tutorial-modal" class="modal">
+        <div class="modal-content">
+            <h2>
+                <span class="english">Welcome to Binary Search Game!</span>
+                <span class="chinese" style="display:none;">歡迎來到二分搜尋遊戲！</span>
+            </h2>
+            <p>
+                <span class="english">This game helps you understand the Binary Search algorithm.</span>
+                <span class="chinese" style="display:none;">這個遊戲幫助您理解二分搜尋演算法。</span>
+            </p>
+            <div id="tutorial-animation-container" style="margin-top: 20px; margin-bottom: 20px;"></div>
+            <div class="tutorial-buttons" style="text-align: center; margin-top: 10px;">
+                <button id="tutorial-go-left" class="tutorial-action-button">⬅️ <span class="english">Go Left</span><span class="chinese" style="display:none;">向左</span></button>
+                <button id="tutorial-found" class="tutorial-action-button">🔍 <span class="english">Found</span><span class="chinese" style="display:none;">找到</span></button>
+                <button id="tutorial-go-right" class="tutorial-action-button">➡️ <span class="english">Go Right</span><span class="chinese" style="display:none;">向右</span></button>
+            </div>
+            <div class="game-rules">
+                <h3>
+                    <span class="english">How to Play:</span>
+                    <span class="chinese" style="display:none;">如何遊玩：</span>
+                </h3>
+                <ol>
+                    <li>
+                        <span class="english">A target number will be highlighted in the array. <br> <strong>Note: arrays in this game start from index 0!</strong></span>
+                        <span class="chinese" style="display:none;">陣列中會突出顯示一個目標數字。<br> <strong>請注意，遊戲中的陣列從索引 0 開始！</strong></span>
+                    </li>
+                    <li>
+                        <span class="english">Your goal is to find this target number by eliminating half of the search space in each step to narrow down the search until you find the target!</span>
+                        <span class="chinese" style="display:none;">您的目標是透過消除一半的搜尋空間以縮小搜尋範圍，直到找到目標數字！。</span>
+                    </li>
+                    <li>
+                        <span class="english">The game will show you the current 'left', 'right', and 'middle' elements.</span>
+                        <span class="chinese" style="display:none;">遊戲將顯示當前「左」、「右」和「中間」元素。</span>
+                    </li>
+                    <li>
+                        <span class="english">Choose to eliminate the left half, the right half, or confirm if the middle element is the target.</span>
+                        <span class="chinese" style="display:none;">選擇消除左半部分、右半部分，或確認中間元素是否為目標。</span>
+                    </li>
+                </ol>
+            </div>
+            <button id="start-game-button">
+                <span class="english">Let's Play!</span>
+                <span class="chinese" style="display:none;">開始遊戲！</span>
+            </button>
+            <button id="skip-tutorial-button">
+                <span class="english">Skip Tutorial</span>
+                <span class="chinese" style="display:none;">跳過教學</span>
+            </button>
+        </div>
+    </div>
+    <div id="app">
+    </div>
+    <div id="game-description" class="game-description">
+        <h3><span class="english">Gameplay Description:</span><span class="chinese" style="display:none;">遊戲玩法說明：</span></h3>
+        <ul>
+            <li>
+                <span class="english">Your goal is to find the target number by using the "Go Left" or "Go Right" buttons to reduce the search area.</span>
+                <span class="chinese" style="display:none;">您的目標是透過使用「向左」或「向右」按鈕來縮小搜尋範圍，以找到目標數字。</span>
+            </li>
+            <li>
+                <span class="english">If the current middle element is the target, click "Found".</span>
+                <span class="chinese" style="display:none;">如果當前指向的中間元素是目標，請點擊「找到」。</span>
+            </li>
+            <li>
+                <span class="english">The marks under the elements indicate the current left boundary (L), right boundary (R), and the middle element (M) of the array.</span>
+                <span class="chinese" style="display:none;">元素下方的標記表示陣列的當前左邊界 (L)、右邊界 (R) 和中間元素 (M)。</span>
+            </li>
+        </ul>
+    </div>
+    <a href="../index.html" class="home-button">🏠 Go Back Home</a>
+    <button class="lang-toggle">中/Eng</button>
+    <script type="module" src="../shared/js/utils.js"></script>
+    <script type="module" src="../shared/js/lang-toggle.js"></script>
+    <script type="module" src="js/game.js"></script>
+    <script type="module" src="js/tutorial-animation.js"></script>
+
+    <!-- Sound Effects -->
+    <audio id="correctSound" src="../shared/assets/correct.mp3" preload="auto"></audio>
+    <audio id="incorrectSound" src="../shared/assets/incorrect.mp3" preload="auto"></audio>
+    <audio id="winSound" src="../shared/assets/win.mp3" preload="auto"></audio>
+    <audio id="loseSound" src="../shared/assets/lose.mp3" preload="auto"></audio>
+</body>
+</html>

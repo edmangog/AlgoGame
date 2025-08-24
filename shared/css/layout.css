@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Press+Start+2P&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-color: var(--background);
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: var(--text-light);
+    margin-bottom: 2rem;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 0 8px 15px var(--shadow-medium);
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    transform: rotate(45deg);
+    animation: header-glow 15s infinite linear;
+}
+
+@keyframes header-glow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.header h1 {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--text-light);
+    margin-bottom: 0.75rem;
+    font-size: 2.2rem; /* Reduced from 2.8rem */
+    text-shadow: 3px 3px var(--text-dark); /* Adjusted shadow */
+    position: relative;
+    z-index: 1;
+}
+
+.header p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 1.1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.game-area {
+    background: var(--card-background);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 20px var(--shadow-light);
+    margin-top: 2rem;
+}
+
+.lang-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px var(--shadow-light);
+    transition: all 0.3s ease;
+    background: var(--accent-blue);
+    color: var(--text-light);
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.lang-toggle:hover {
+    background: #05B88F;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 12px var(--shadow-medium);
+}
+
+.score-board {
+    text-align: center;
+    margin: 30px 0;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.controls {
+    text-align: center;
+    margin-top: 30px;
+}
+
+button {
+    background: var(--primary);
+    color: var(--text-light);
+    border: none;
+    padding: 14px 28px;
+    border-radius: 30px;
+    cursor: pointer;
+    margin: 0 15px;
+    transition: all 0.3s ease;
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: 0 4px 8px var(--shadow-light);
+}
+
+button:hover {
+    background: #FF5252;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 12px var(--shadow-medium);
+}
+
+.home-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px; /* Add some space above the button */
+    text-decoration: none; /* Remove underline from link */
+    color: var(--primary); /* Example color, can be adjusted */
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.home-button:hover {
+    color: var(--accent-blue); /* Example hover color */
+}
+
+.home-button { /* Styling for the emoji */
+    margin-right: 8px;
+}

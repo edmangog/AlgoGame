@@ -1,0 +1,234 @@
+/* Insertion Sort Game Styles */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.game-area {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.number-line {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 30px 0;
+    min-height: 100px;
+}
+
+.number-box {
+    width: 60px;
+    height: 60px;
+    background: var(--secondary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    transition: transform 0.3s;
+    position: relative;
+}
+
+.number-box.key {
+    border: 3px solid gold;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255,215,0,0.8);
+    position: relative;
+}
+
+.number-box.key::after {
+    content: 'KEY';
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: gold;
+    color: black;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.number-box.compared {
+    border: 3px solid #2196F3;
+    transform: scale(1.1);
+}
+
+.number-box.swapping {
+    animation: swap 0.8s ease-in-out;
+}
+
+@keyframes swap {
+    0% { transform: translateY(0) scale(1.1); }
+    50% { transform: translateY(-30px) scale(1.1); }
+    100% { transform: translateY(0) scale(1.1); }
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+}
+
+.score-animation {
+    animation: floatUp 1s ease-out;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: -20px;
+}
+
+.core-buttons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.score-board {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.tutorial {
+    background: rgba(78, 205, 196, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 30px;
+}
+
+.big-score {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+    color: #2c3e50;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    padding: 5px 15px;
+    background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Horizontal layout for difficulty and New Game */
+.other-controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.difficulty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Score board styling */
+.score-board {
+    margin-bottom: 20px;
+}
+
+.score-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.score-row.big-score {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 5px 0;
+    font-size: 28px;
+    font-weight: bold;
+    color: #2c3e50;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    padding: 8px 20px;
+    background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    min-width: 400px; /* Wider than the array */
+    justify-content: center; /* Center content horizontally */
+}
+
+.time-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 5px 0;
+    font-size: 20px;
+}
+
+.timer-value {
+    font-weight: none;
+}
+
+/* Score animation container */
+.score-animation-container {
+    position: relative;
+    height: 40px;
+    margin-top: -40px; /* Align vertically with score row */
+    text-align: center;
+}
+
+.score-change {
+    position: absolute;
+    font-weight: bold;
+    font-size: 24px;
+    z-index: 100;
+    animation: scoreChangeAnimation 1.5s ease-out;
+    pointer-events: none;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+}
+
+@keyframes scoreChangeAnimation {
+    0% {
+        transform: translate(-50%, -50px);
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, 0);
+        opacity: 0;
+    }
+}
+
+.positive-change {
+    color: #2ecc71; /* Green for positive changes */
+}
+
+.negative-change {
+    color: #e74c3c; /* Red for negative changes */
+}
