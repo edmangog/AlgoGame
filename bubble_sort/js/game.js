@@ -52,6 +52,9 @@ class BubbleSortGame {
             }
         };
         
+        // Initialize language from local storage or default to 'english'
+        this.language = localStorage.getItem('algogame-language') === 'zh' ? 'chinese' : 'english';
+        
         this.init();
     }
     
@@ -70,7 +73,11 @@ class BubbleSortGame {
     init() {
         this.setupDOM();
         this.setupEventListeners();
-        setupLanguageToggle(); // Initialize after DOM is ready
+        setupLanguageToggle(); 
+        // Listen for language change events
+        document.addEventListener('languageChange', (event) => {
+            this.language = event.detail.language === 'en' ? 'english' : 'chinese';
+        });
         this.showTutorialOrStartGame();
     }
 
